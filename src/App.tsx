@@ -44,7 +44,9 @@ function Header({ location }: RouteComponentProps) {
     return (
         <header className={styles.header}>
             <span>
-                <Link to='/'>💎 Diamond Drink Menu 💎</Link>
+                <Link className={styles.headerLink} to='/'>
+                    💎 Diamond Drink Menu
+                </Link>
                 {!!breadcrumb && (
                     <React.Fragment>
                         <i className='fas fa-chevron-right' />
