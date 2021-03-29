@@ -1,0 +1,20 @@
+.root {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 12px;
+}
+.link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 48px 0;
+    background: rgb(210, 236, 245);
+    margin-bottom: 24px;
+    border-radius: 7px;
+    text-decoration: none;
+    i {
+        font-size: 32px;
+        margin-bottom: 12px;
+    }
+}

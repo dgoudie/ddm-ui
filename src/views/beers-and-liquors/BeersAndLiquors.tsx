@@ -1,5 +1,4 @@
 import { BeerOrLiquorBrand } from '@stan/ddm-types';
-import { Link } from 'react-router-dom';
 import React from 'react';
 import { beerOrLiquorTypeIconMap } from '../../utils/beer-liquor-type-icon-map';
 import styles from './BeersAndLiquors.module.scss';
@@ -14,13 +13,6 @@ export default function BeersAndLiquors() {
     }
     return (
         <React.Fragment>
-            <header className={styles.header}>
-                <span>
-                    <Link to='/'>Home</Link>
-                    <i className='fas fa-chevron-right' />
-                    Beers & Liquors
-                </span>
-            </header>
             <div className={styles.list}>
                 {response?.map((beerOrLiquor) => (
                     <BeerOrLiquor
