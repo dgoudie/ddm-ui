@@ -8,6 +8,7 @@ import {
 
 import BeersAndLiquors from './views/beers-and-liquors/BeersAndLiquors';
 import Home from './views/home/Home';
+import MixedDrinks from './views/mixed-drinks/MixedDrinks';
 import React from 'react';
 import styles from './App.module.scss';
 
@@ -20,6 +21,7 @@ function App() {
                 exact
                 component={BeersAndLiquors}
             />
+            <Route path='/mixed-drinks' exact component={MixedDrinks} />
             <Route path='/' exact component={Home} />
         </Router>
     );

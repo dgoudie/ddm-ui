@@ -1,0 +1,39 @@
+.list {
+    display: block;
+    max-width: 720px;
+    padding: 0 12px;
+    margin: 0 auto;
+}
+.listItem {
+    margin: 12px 0;
+    padding-bottom: 12px;
+    i {
+        margin-right: 8px;
+    }
+    &:not(:last-child) {
+        border-bottom: 1px solid lightgray;
+    }
+
+    &NameAndIcon {
+        font-size: 110%;
+        margin-bottom: 4px;
+    }
+
+    &Status {
+        font-size: 75%;
+    }
+}
+
+.ingredients {
+    font-size: 75%;
+    padding: 0 0 0 12px;
+    h4 {
+        margin: 0;
+        font-weight: normal;
+    }
+    ul {
+        list-style-type: none;
+        margin: 4px 0;
+        padding: 0 0 0 12px;
+    }
+}
