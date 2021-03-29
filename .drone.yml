@@ -47,8 +47,8 @@ steps:
             --restart=always
             --name $${HOST_NAME}
             --network="nginx_default"
-            -e "VIRTUAL_HOST=$${DOMAIN}"
-            -e "LETSENCRYPT_HOST=$${DOMAIN}"
+            -e "VIRTUAL_HOST=$${HOST_NAME}.$${DOMAIN}"
+            -e "LETSENCRYPT_HOST=$${HOST_NAME}.$${DOMAIN}"
             -e "LETSENCRYPT_EMAIL=$${EMAIL}"
             $${DOCKER_REPO_NAME}
       environment:
