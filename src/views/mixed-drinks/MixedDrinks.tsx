@@ -4,16 +4,16 @@ import styles from './MixedDrinks.module.scss';
 import { useFetchFromApi } from '../../utils/fetch-from-api';
 
 export default function MixedDrinks() {
-    const { response, error } = useFetchFromApi<
-        MixedDrinkRecipeWithIngredients[]
-    >(`/mixed-drinks`);
-    if (!!error) {
+    const response = useFetchFromApi<MixedDrinkRecipeWithIngredients[]>(
+        `/mixed-drinks`
+    );
+    if (!response?.data) {
         return null;
     }
     return (
         <React.Fragment>
             <div className={styles.list}>
-                {response?.map((mixedDrink) => (
+                {response.data.map((mixedDrink) => (
                     <MixedDrink key={mixedDrink._id} mixedDrink={mixedDrink} />
                 ))}
             </div>

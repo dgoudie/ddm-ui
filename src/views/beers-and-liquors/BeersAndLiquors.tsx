@@ -5,16 +5,14 @@ import styles from './BeersAndLiquors.module.scss';
 import { useFetchFromApi } from '../../utils/fetch-from-api';
 
 export default function BeersAndLiquors() {
-    const { response, error } = useFetchFromApi<BeerOrLiquorBrand[]>(
-        `/beers-and-liquors`
-    );
-    if (!!error) {
+    const response = useFetchFromApi<BeerOrLiquorBrand[]>(`/beers-and-liquors`);
+    if (!response?.data) {
         return null;
     }
     return (
         <React.Fragment>
             <div className={styles.list}>
-                {response?.map((beerOrLiquor) => (
+                {response.data.map((beerOrLiquor) => (
                     <BeerOrLiquor
                         key={beerOrLiquor._id}
                         beerOrLiquor={beerOrLiquor}

@@ -1,5 +1,6 @@
 html {
-    --background: white;
+    --background: #f5f5f5;
+    --background-alt: white;
     --font-color: black;
     --font-color-dim: #6e6e6e;
     --border-color: #777;
@@ -11,6 +12,7 @@ html {
 
     @media (prefers-color-scheme: dark) {
         --background: black;
+        --background-alt: #292929;
         --font-color: #c2c2c2;
         --font-color-dim: #8f8f8f;
         --border-color: #272727;

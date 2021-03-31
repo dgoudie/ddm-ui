@@ -1,6 +1,5 @@
 .header {
     border-bottom: 1px solid var(--border-color);
-    padding: 12px 0;
     position: sticky;
     top: 0;
     background: var(--background);
@@ -9,13 +8,26 @@
     &Inner {
         display: flex;
         justify-content: space-between;
-        max-width: 720px;
-        padding: 0 12px;
+        align-items: center;
+        box-sizing: border-box;
+        max-width: calc(100vw - 24px);
+        width: 720px;
         margin: 0 auto;
-        > span {
+        > div {
+            display: flex;
+            align-items: center;
             i {
                 margin: 0 8px;
             }
+        }
+        > a {
+            color: var(--font-color);
+            align-self: stretch;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            text-decoration: none;
+            margin-right: -10px;
         }
     }
 
@@ -24,7 +36,9 @@
         color: var(--font-color);
         text-decoration: none;
         padding: 6px 10px;
+        margin: 6px 0;
         border-radius: 1000px;
+        display: block;
     }
 }
 

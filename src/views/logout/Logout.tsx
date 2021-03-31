@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useRef } from 'react';
 
+import { LoggedInStatusContext } from '../../App';
 import { Redirect } from 'react-router';
-import { TokenContext } from '../../App';
+import { fetchFromApi } from '../../utils/fetch-from-api';
 import styles from './Logout.module.scss';
 
 export default function Logout() {
     const [redirectToHome, setRedirectToHome] = React.useState(false);
-    const { token, setToken } = useContext(TokenContext);
+    const { loggedIn, logout } = useContext(LoggedInStatusContext);
     const isInitialRender = useRef(true);
 
-    const handleButtonClick = () => {
-        setToken(null);
+    const handleButtonClick = async () => {
+        await fetchFromApi(`/logout`);
+        logout();
     };
 
     useEffect(() => {
@@ -19,7 +21,7 @@ export default function Logout() {
         } else {
             isInitialRender.current = false;
         }
-    }, [token]);
+    }, [loggedIn]);
     if (redirectToHome) {
         return <Redirect to='/' />;
     }
