@@ -1,23 +1,35 @@
 .header {
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid var(--border-color);
     padding: 12px 0;
     position: sticky;
     top: 0;
-    background: white;
-    > span {
-        display: block;
+    background: var(--background);
+    font-size: 90%;
+
+    &Inner {
+        display: flex;
+        justify-content: space-between;
         max-width: 720px;
         padding: 0 12px;
         margin: 0 auto;
-        i {
-            margin: 0 8px;
+        > span {
+            i {
+                margin: 0 8px;
+            }
         }
     }
 
     &Link {
         background-color: var(--highlight-color);
+        color: var(--font-color);
         text-decoration: none;
-        padding: 4px 10px;
+        padding: 6px 10px;
         border-radius: 1000px;
     }
+}
+
+.body {
+    max-width: calc(100vw - 24px);
+    width: 720px;
+    margin: 0 auto;
 }

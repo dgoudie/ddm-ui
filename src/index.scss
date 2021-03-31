@@ -1,5 +1,22 @@
 html {
+    --background: white;
+    --font-color: black;
+    --font-color-dim: #6e6e6e;
+    --border-color: #777;
     --highlight-color: #bff0ff;
+    --highlight-color-dim: #99bec9;
+
+    background: var(--background);
+    color: var(--font-color);
+
+    @media (prefers-color-scheme: dark) {
+        --background: black;
+        --font-color: #c2c2c2;
+        --font-color-dim: #8f8f8f;
+        --border-color: #272727;
+        --highlight-color: #052b36;
+        --highlight-color-dim: #031a20;
+    }
 }
 
 body {
@@ -17,5 +34,17 @@ code {
 }
 
 a {
-    color: black;
+    color: var(--font-color);
+}
+
+.standard-button {
+    color: var(--font-color);
+    background: var(--highlight-color);
+    border: none;
+    border-radius: 1000px;
+
+    &:disabled {
+        color: var(--font-color-dim);
+        background: var(--highlight-color-dim);
+    }
 }

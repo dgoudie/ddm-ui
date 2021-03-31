@@ -1,8 +1,5 @@
 .list {
     display: block;
-    max-width: 720px;
-    padding: 0 12px;
-    margin: 0 auto;
 }
 .listItem {
     margin: 12px 0;
@@ -11,7 +8,7 @@
         margin-right: 8px;
     }
     &:not(:last-child) {
-        border-bottom: 1px solid lightgray;
+        border-bottom: 1px solid var(--border-color);
     }
 
     &NameAndIcon {
