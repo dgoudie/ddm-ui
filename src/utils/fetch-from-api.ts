@@ -14,6 +14,7 @@ export const fetchFromApi = <T>(
     headers?: any
 ): Promise<AxiosResponse<T>> => {
     return axios.get<T>(`${process.env.REACT_APP_API}${path}`, {
+        withCredentials: true,
         params,
         headers,
     });
