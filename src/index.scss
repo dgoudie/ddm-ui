@@ -6,6 +6,7 @@ html {
     --border-color: #777;
     --highlight-color: #bff0ff;
     --highlight-color-dim: #99bec9;
+    --error-button-background: #f5003167;
 
     background: var(--background);
     color: var(--font-color);
@@ -18,6 +19,7 @@ html {
         --border-color: #272727;
         --highlight-color: #052b36;
         --highlight-color-dim: #031a20;
+        --error-button-background: #dc143c67;
     }
 }
 
