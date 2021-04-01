@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
 import { BeerOrLiquorBrand } from '@stan/ddm-types';
 import { LoggedInStatusContext } from '../../App';
@@ -27,7 +27,7 @@ export default function BeersAndLiquors() {
 
 function BeerOrLiquor({ beerOrLiquor }: { beerOrLiquor: BeerOrLiquorBrand }) {
     const { loggedIn } = useContext(LoggedInStatusContext);
-    const [menuOpen, setMenuOpen] = useState(false);
+    // const [menuOpen, setMenuOpen] = useState(false);
     return (
         <div className={styles.listItem}>
             <div className={styles.listItemInfo}>
