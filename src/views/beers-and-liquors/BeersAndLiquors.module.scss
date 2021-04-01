@@ -4,11 +4,30 @@
 .listItem {
     margin: 12px 0;
     padding-bottom: 12px;
-    i {
-        margin-right: 8px;
-    }
+    display: flex;
+    align-items: center;
     &:not(:last-child) {
         border-bottom: 1px solid var(--border-color);
+    }
+
+    &Info {
+        flex: 1;
+        i {
+            margin-right: 8px;
+        }
+    }
+
+    &Actions {
+        flex-shrink: 0;
+        button {
+            border: none;
+            background: var(--background-alt);
+            color: inherit;
+            width: 36px;
+            height: 36px;
+            border-radius: 1000px;
+            cursor: pointer;
+        }
     }
 
     &NameAndIcon {

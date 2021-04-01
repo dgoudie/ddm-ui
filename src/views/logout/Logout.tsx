@@ -1,18 +1,25 @@
 import React, { useContext, useEffect, useRef } from 'react';
+import { Redirect, RouteComponentProps, withRouter } from 'react-router';
+import toast, { Toaster } from 'react-hot-toast';
 
 import { LoggedInStatusContext } from '../../App';
-import { Redirect } from 'react-router';
 import { fetchFromApi } from '../../utils/fetch-from-api';
 import styles from './Logout.module.scss';
 
-export default function Logout() {
+function Logout({ location }: RouteComponentProps) {
     const [redirectToHome, setRedirectToHome] = React.useState(false);
     const { loggedIn, logout } = useContext(LoggedInStatusContext);
     const isInitialRender = useRef(true);
 
+    const referrer = new URLSearchParams(location.search).get('referrer');
+
     const handleButtonClick = async () => {
-        await fetchFromApi(`/logout`);
-        logout();
+        try {
+            await fetchFromApi(`/logout`);
+            logout();
+        } catch (e) {
+            toast.error('An error occurred.');
+        }
     };
 
     useEffect(() => {
@@ -23,13 +30,16 @@ export default function Logout() {
         }
     }, [loggedIn]);
     if (redirectToHome) {
-        return <Redirect to='/' />;
+        return <Redirect to={referrer ?? '/'} />;
     }
     return (
         <div className={styles.root}>
+            <Toaster position='bottom-center' />
             <button className='standard-button' onClick={handleButtonClick}>
                 Logout
             </button>
         </div>
     );
 }
+
+export default withRouter(Logout);

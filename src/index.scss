@@ -13,7 +13,7 @@ html {
     @media (prefers-color-scheme: dark) {
         --background: black;
         --background-alt: #292929;
-        --font-color: #c2c2c2;
+        --font-color: #f5f5f5;
         --font-color-dim: #8f8f8f;
         --border-color: #272727;
         --highlight-color: #052b36;
@@ -44,6 +44,7 @@ a {
     background: var(--highlight-color);
     border: none;
     border-radius: 1000px;
+    cursor: pointer;
 
     &:disabled {
         color: var(--font-color-dim);

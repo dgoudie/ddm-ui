@@ -6,6 +6,7 @@ import {
     withRouter,
 } from 'react-router-dom';
 import React, { useContext, useEffect } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 import BeersAndLiquors from './views/beers-and-liquors/BeersAndLiquors';
 import Home from './views/home/Home';
@@ -36,15 +37,24 @@ export const LoggedInStatusContext = React.createContext<LoggedInStatusContextTy
 
 function App() {
     const [loggedIn, setLoggedIn] = React.useState(false);
+    const login = () => {
+        setLoggedIn(true);
+        toast.success('Logged in successfully.');
+    };
+    const logout = () => {
+        setLoggedIn(false);
+        toast.success('Logged out successfully.');
+    };
     return (
         <LoggedInStatusContext.Provider
             value={{
                 loggedIn,
-                login: () => setLoggedIn(true),
-                logout: () => setLoggedIn(false),
+                login,
+                logout,
             }}
         >
             <LoggedInChecker />
+            <Toaster position='bottom-center' />
             <Router>
                 <ThemeHandler />
                 <HeaderWithRouter />
@@ -129,7 +139,11 @@ function Header({ location }: RouteComponentProps) {
                                 </React.Fragment>
                             )}
                         </div>
-                        <Link to={!!loggedIn ? '/logout' : '/login'}>
+                        <Link
+                            to={`${
+                                !!loggedIn ? '/logout' : '/login'
+                            }?referrer=${location.pathname}`}
+                        >
                             <i
                                 className={`fas fa-${
                                     !!loggedIn ? 'lock-open' : 'lock'

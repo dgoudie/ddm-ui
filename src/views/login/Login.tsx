@@ -1,17 +1,19 @@
 import React, { FormEvent, useContext, useEffect, useRef } from 'react';
+import { Redirect, RouteComponentProps, withRouter } from 'react-router';
 import toast, { Toaster } from 'react-hot-toast';
 
 import { LoggedInStatusContext } from '../../App';
-import { Redirect } from 'react-router';
 import { fetchFromApi } from '../../utils/fetch-from-api';
 import styles from './Login.module.scss';
 
-export default function Login() {
+function Login({ location }: RouteComponentProps) {
     const [redirectToHome, setRedirectToHome] = React.useState(false);
     const { loggedIn, login } = useContext(LoggedInStatusContext);
     const isInitialRender = useRef(true);
     const inputRef = useRef<HTMLInputElement>(null);
     const [buttonDisabled, setButtonDisabled] = React.useState(true);
+
+    const referrer = new URLSearchParams(location.search).get('referrer');
 
     const formSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -45,7 +47,7 @@ export default function Login() {
         }
     }, [loggedIn]);
     if (redirectToHome) {
-        return <Redirect to='/' />;
+        return <Redirect to={referrer ?? '/'} />;
     }
     return (
         <React.Fragment>
@@ -74,3 +76,5 @@ export default function Login() {
         </React.Fragment>
     );
 }
+
+export default withRouter(Login);
