@@ -10,6 +10,11 @@ COPY package*.json ./
 COPY tsconfig*.json ./
 COPY ./src ./src
 COPY ./public ./public
+
+# Set env variable
+ARG REACT_APP_API
+ENV REACT_APP_API=$REACT_APP_API
+
 RUN npm ci --quiet && npm run build
 
 # Stage 2
