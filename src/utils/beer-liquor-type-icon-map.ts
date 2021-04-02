@@ -1,4 +1,4 @@
-import { BeerOrLiquorBrandType } from '@stan/ddm-types';
+import { BeerOrLiquorBrandType } from '@dgoudie/ddm-types';
 
 export const beerOrLiquorTypeIconMap = new Map<BeerOrLiquorBrandType, string>([
     ['BEER', 'beer'],

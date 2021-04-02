@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 
-import { BeerOrLiquorBrand } from '@stan/ddm-types';
+import { BeerOrLiquorBrand } from '@dgoudie/ddm-types';
 import Dialog from '../../components/dialog/Dialog';
 import { LoggedInStatusContext } from '../../App';
 import { beerOrLiquorTypeIconMap } from '../../utils/beer-liquor-type-icon-map';

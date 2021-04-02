@@ -1,4 +1,4 @@
-import { MixedDrinkRecipeWithIngredients } from '@stan/ddm-types';
+import { MixedDrinkRecipeWithIngredients } from '@dgoudie/ddm-types';
 import React from 'react';
 import styles from './MixedDrinks.module.scss';
 import { useFetchFromApi } from '../../utils/fetch-from-api';
