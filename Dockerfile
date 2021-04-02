@@ -12,8 +12,7 @@ COPY ./src ./src
 COPY ./public ./public
 
 # Set env variable
-ARG REACT_APP_API
-ENV REACT_APP_API=$REACT_APP_API
+ENV REACT_APP_API=https://ddm-api.goudie.dev/api
 
 RUN npm ci --quiet && npm run build
 
