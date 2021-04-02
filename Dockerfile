@@ -1,12 +1,17 @@
-FROM nginx:1.14.1-alpine
+#
+# Builder stage.
+# This state compile our React App to get the JavaScript code
+#
+FROM node:12.13.0 AS builder
 
-## Copy our default nginx config
-COPY nginx/default.conf /etc/nginx/conf.d/
+WORKDIR /usr/src/app
 
-## Remove default nginx website
-RUN rm -rf /usr/share/nginx/html/*
+COPY package*.json ./
+COPY tsconfig*.json ./
+COPY ./src ./src
+COPY ./public ./public
+RUN npm ci --quiet && npm run build
 
-## From ‘builder’ stage copy over the artifacts in dist folder to default nginx public folder
-COPY /build /usr/share/nginx/html
-
-CMD ["nginx", "-g", "daemon off;"]
+# Stage 2
+FROM nginx:1.17.1-alpine
+COPY --from=builder /usr/src/app/build /usr/share/nginx/html

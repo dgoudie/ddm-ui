@@ -45,99 +45,47 @@
     }
 }
 
-.dialog {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    align-items: center;
-    justify-content: center;
-    display: flex;
+.actions {
+    display: grid;
+    grid-auto-flow: row;
+    gap: 12px;
+    margin-top: 12px;
 
-    &Backdrop {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: -1;
-        animation: fadeBackdrop 150ms forwards;
-    }
-    &Body {
-        max-width: calc(100vw - 24px);
-        width: 720px;
-        background-color: var(--background-alt);
-        padding: 24px;
-        border-radius: 18px;
-        box-sizing: border-box;
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            h3 {
-                margin: 0;
-            }
-            button {
-                border: none;
-                background-color: transparent;
-                color: inherit;
-                width: 36px;
-                height: 36px;
-                font-size: 16px;
-                cursor: pointer;
-            }
-        }
-        &Actions {
-            display: grid;
-            grid-auto-flow: row;
-            gap: 12px;
-            margin-top: 12px;
-
-            button {
-                border-radius: 1000px;
-                border: none;
-                height: 36px;
-                font-size: 100%;
-                background: var(--error-button-background);
-                color: inherit;
-                i {
-                    margin-right: 8px;
-                }
-            }
-        }
-
-        &ConfirmDelete {
-            margin-top: 12px;
-            section {
-                display: grid;
-                grid-auto-flow: column;
-                margin-top: 18px;
-                gap: 12px;
-            }
-            button {
-                border-radius: 1000px;
-                border: none;
-                height: 36px;
-                font-size: 100%;
-                color: inherit;
-                i {
-                    margin-right: 8px;
-                }
-            }
-
-            &Yes {
-                background: var(--error-button-background);
-            }
+    button {
+        border-radius: 1000px;
+        border: none;
+        height: 36px;
+        font-size: 100%;
+        background: var(--error-button-background);
+        color: inherit;
+        i {
+            margin-right: 8px;
         }
     }
 }
 
-@keyframes fadeBackdrop {
-    from {
-        backdrop-filter: blur(0);
+.confirmDelete {
+    margin-top: 12px;
+    section {
+        display: grid;
+        grid-auto-flow: column;
+        margin-top: 18px;
+        gap: 12px;
     }
-    to {
-        backdrop-filter: blur(3px);
+    button {
+        border-radius: 1000px;
+        border: none;
+        height: 36px;
+        color: inherit;
+        text-transform: uppercase;
+        font-size: 80%;
+        font-family: inherit;
+        i {
+            margin-right: 8px;
+        }
+    }
+
+    &Yes {
+        background: var(--error-button-background);
     }
 }
