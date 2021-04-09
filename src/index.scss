@@ -6,6 +6,7 @@
     --border-color: #777;
     --highlight-color: #bff0ff;
     --highlight-color-dim: #99bec9;
+    --error-text: rgb(223, 60, 92);
     --error-button-background: #f5003167;
     --success-button-background: #31f50067;
 
@@ -70,6 +71,11 @@ a {
     border-radius: 1000px;
     cursor: pointer;
     font-family: inherit;
+    text-decoration: none;
+
+    i {
+        margin-right: 8px;
+    }
 
     &:disabled {
         color: var(--font-color-dim);

@@ -15,38 +15,82 @@
 }
 
 .list {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--border-color);
 }
 .listItem {
-    margin: 12px 0;
-    padding-bottom: 12px;
+    cursor: pointer;
+    background-color: inherit;
+    border: none;
+    outline: none;
+    padding: 24px 0;
     i {
         margin-right: 8px;
     }
-    &:not(:last-child) {
-        border-bottom: 1px solid var(--border-color);
+    &:not(:first-of-type) {
+        border-top: 1px solid var(--border-color);
     }
 
-    &NameAndIcon {
-        font-size: 110%;
+    &Name {
+        font-size: 28px;
         margin-bottom: 4px;
-    }
-
-    &Status {
-        font-size: 75%;
+        &Title {
+            font-family: 'Rancho', cursive;
+            font-size: 36px;
+        }
     }
 }
 
 .ingredients {
-    font-size: 75%;
-    padding: 0 0 0 12px;
+    font-size: 16px;
     h4 {
         margin: 0;
         font-weight: normal;
     }
-    ul {
-        list-style-type: none;
-        margin: 4px 0;
-        padding: 0 0 0 12px;
+    &OutOfStock {
+        color: var(--error-text);
+    }
+}
+
+.recipeTip {
+    margin-top: 8px;
+    font-style: italic;
+    color: var(--font-color-dim);
+    user-select: none;
+}
+
+.recipe {
+    background-color: var(--background-alt);
+    display: grid;
+    align-items: center;
+    grid-template-columns: min-content min-content 1fr;
+    gap: 6px 18px;
+    padding: 12px 18px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+
+    &Header {
+        grid-column-start: span 3;
+        font-size: 75%;
+        color: var(--font-color-dim);
+    }
+    &AdditionalNotes {
+        grid-column-start: span 3;
+        margin: 0;
+        padding: 0;
+        font-family: inherit;
+        white-space: pre-wrap;
+    }
+}
+
+.newMixedDrinkButton {
+    display: flex;
+    justify-content: center;
+    a {
+        padding: 8px 14px;
+        display: inline-block;
+        white-space: nowrap;
+        margin-top: 12px;
     }
 }

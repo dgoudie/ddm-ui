@@ -1,7 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 
+import { Link } from 'react-router-dom';
 import Loader from '../../components/loader/Loader';
+import { LoggedInStatusContext } from '../../App';
 import { MixedDrinkRecipeWithIngredients } from '@dgoudie/ddm-types';
+import classNames from 'classnames';
 import { displayErrorToast } from '../../utils/toast';
 import styles from './MixedDrinks.module.scss';
 import { useDebouncedEffect } from '../../utils/use-debounced-effect';
@@ -11,6 +14,8 @@ export default function MixedDrinks() {
     const [onlyInStock, setOnlyInStock] = useState(true);
     const [filterText, setFilterText] = useState('');
     const [debouncedfilterText, setDebouncedFilterText] = useState(filterText);
+
+    const { loggedIn } = useContext(LoggedInStatusContext);
 
     useDebouncedEffect(() => setDebouncedFilterText(filterText), 300, [
         filterText,
@@ -48,14 +53,27 @@ export default function MixedDrinks() {
                 <label htmlFor='only-in-stock'>Only Show In-Stock</label>
             </div>
             {!!response?.data ? (
-                <div className={styles.list}>
-                    {response.data.map((mixedDrink) => (
-                        <MixedDrink
-                            key={mixedDrink._id}
-                            mixedDrink={mixedDrink}
-                        />
-                    ))}
-                </div>
+                <React.Fragment>
+                    <div className={styles.list}>
+                        {response.data.map((mixedDrink) => (
+                            <MixedDrink
+                                key={mixedDrink._id}
+                                mixedDrink={mixedDrink}
+                            />
+                        ))}
+                    </div>
+                    {loggedIn && (
+                        <div className={styles.newMixedDrinkButton}>
+                            <Link
+                                className={'standard-button'}
+                                to='/mixed-drink'
+                            >
+                                <i className='fas fa-cocktail'></i>
+                                New Mixed Drink
+                            </Link>
+                        </div>
+                    )}
+                </React.Fragment>
             ) : (
                 <Loader className={styles.loader} />
             )}
@@ -68,22 +86,63 @@ function MixedDrink({
 }: {
     mixedDrink: MixedDrinkRecipeWithIngredients;
 }) {
+    const [recipeVisible, setRecipeVisible] = useState(false);
     return (
-        <div className={styles.listItem}>
-            <div className={styles.listItemNameAndIcon}>
-                <span>{mixedDrink.name}</span>
-            </div>
-            <div className={styles.ingredients}>
-                <h4>Ingredients:</h4>
-                <ul>
+        <React.Fragment>
+            <button
+                onClick={() => setRecipeVisible(!recipeVisible)}
+                className={styles.listItem}
+            >
+                <div className={styles.listItemName}>
+                    <span className={styles.listItemNameTitle}>
+                        {mixedDrink.name}
+                    </span>
+                    <span> - </span>
+                    <span>${mixedDrink.price}</span>
+                </div>
+                <div className={styles.ingredients}>
+                    {mixedDrink.requiredBeersOrLiquors.map(
+                        (ingredient, index) => (
+                            <React.Fragment key={ingredient._id}>
+                                <span
+                                    className={classNames(
+                                        !ingredient.inStock &&
+                                            styles.ingredientsOutOfStock
+                                    )}
+                                >
+                                    {ingredient.name}
+                                </span>
+                                {index <
+                                    mixedDrink.requiredBeersOrLiquors.length -
+                                        1 && <span>, </span>}
+                            </React.Fragment>
+                        )
+                    )}
+                </div>
+                <div className={styles.recipeTip}>Click for recipe</div>
+            </button>
+            {recipeVisible && (
+                <div className={styles.recipe}>
+                    <span className={styles.recipeHeader}>Recipe:</span>
                     {mixedDrink.requiredBeersOrLiquors.map((ingredient) => (
-                        <li key={ingredient._id}>
-                            {ingredient.name} -{' '}
-                            {ingredient.inStock ? 'In Stock' : 'Out of Stock'}
-                        </li>
+                        <React.Fragment key={ingredient._id}>
+                            <span>{ingredient.count}</span>
+                            <span> ✖ </span>
+                            <span>{ingredient.name}</span>
+                        </React.Fragment>
                     ))}
-                </ul>
-            </div>
-        </div>
+                    {mixedDrink.additionalNotes && (
+                        <React.Fragment>
+                            <span className={styles.recipeHeader}>
+                                Additional Notes:
+                            </span>
+                            <pre className={styles.recipeAdditionalNotes}>
+                                {mixedDrink.additionalNotes}
+                            </pre>
+                        </React.Fragment>
+                    )}
+                </div>
+            )}
+        </React.Fragment>
     );
 }
