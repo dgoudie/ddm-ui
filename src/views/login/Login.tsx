@@ -1,10 +1,11 @@
 import React, { FormEvent, useContext, useEffect, useRef } from 'react';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router';
-import toast, { Toaster } from 'react-hot-toast';
 
 import { LoggedInStatusContext } from '../../App';
+import { displayErrorToast } from '../../utils/toast';
 import { fetchFromApi } from '../../utils/fetch-from-api';
 import styles from './Login.module.scss';
+import toast from 'react-hot-toast';
 
 function Login({ location }: RouteComponentProps) {
     const [redirectToHome, setRedirectToHome] = React.useState(false);
@@ -34,7 +35,7 @@ function Login({ location }: RouteComponentProps) {
             if (e.response.status === 422) {
                 toast.error('Invalid Password.');
             } else {
-                toast.error('An Unexpected Error Occurred.');
+                displayErrorToast(e);
             }
         }
     };
@@ -72,7 +73,6 @@ function Login({ location }: RouteComponentProps) {
                     Login
                 </button>
             </form>
-            <Toaster position={'bottom-center'} />
         </React.Fragment>
     );
 }

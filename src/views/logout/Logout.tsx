@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router';
-import toast, { Toaster } from 'react-hot-toast';
 
 import { LoggedInStatusContext } from '../../App';
 import { fetchFromApi } from '../../utils/fetch-from-api';
 import styles from './Logout.module.scss';
+import toast from 'react-hot-toast';
 
 function Logout({ location }: RouteComponentProps) {
     const [redirectToHome, setRedirectToHome] = React.useState(false);
@@ -34,7 +34,6 @@ function Logout({ location }: RouteComponentProps) {
     }
     return (
         <div className={styles.root}>
-            <Toaster position='bottom-center' />
             <button className='standard-button' onClick={handleButtonClick}>
                 Logout
             </button>

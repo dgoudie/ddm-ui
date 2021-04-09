@@ -1,3 +1,19 @@
+.filters {
+    margin-top: 12px;
+
+    input[type='search'] {
+        flex: 1;
+    }
+
+    input[type='checkbox'] {
+        margin: 12px 12px 12px 6px;
+    }
+}
+
+.loader {
+    margin: 48px auto 0;
+}
+
 .list {
     display: block;
 }
@@ -54,12 +70,17 @@
     button {
         border-radius: 1000px;
         border: none;
-        height: 36px;
+        height: 48px;
         font-size: 100%;
         background: var(--error-button-background);
+        font-family: inherit;
         color: inherit;
         i {
             margin-right: 8px;
+        }
+
+        &.markInStock {
+            background-color: var(--success-button-background);
         }
     }
 }

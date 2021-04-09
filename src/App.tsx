@@ -22,28 +22,28 @@ const documentThemeColorMeta = document.querySelector(
 );
 
 type LoggedInStatusContextType = {
-    loggedIn: boolean;
+    loggedIn: boolean | null;
     login: () => void;
     logout: () => void;
 };
 
 export const LoggedInStatusContext = React.createContext<LoggedInStatusContextType>(
     {
-        loggedIn: false,
+        loggedIn: null,
         login: () => null,
         logout: () => null,
     }
 );
 
 function App() {
-    const [loggedIn, setLoggedIn] = React.useState(false);
+    const [loggedIn, setLoggedIn] = React.useState<boolean | null>(null);
     const login = () => {
         setLoggedIn(true);
-        toast.success('Logged in successfully.');
+        loggedIn === false && toast.success('Logged in successfully.');
     };
     const logout = () => {
         setLoggedIn(false);
-        toast.success('Logged out successfully.');
+        loggedIn === true && toast.success('Logged out successfully.');
     };
     return (
         <LoggedInStatusContext.Provider
@@ -88,17 +88,19 @@ function ThemeHandler() {
 
 function LoggedInChecker() {
     const { loggedIn, login, logout } = useContext(LoggedInStatusContext);
-    const response = useFetchFromApi<boolean>('/verify-token');
+    const [response, error, loading] = useFetchFromApi<boolean>(
+        '/verify-token'
+    );
     useEffect(() => {
-        if (!response) {
+        if (loading) {
             return;
         }
-        if (response.status === 200 && !loggedIn) {
+        if (response?.status === 200 && !loggedIn) {
             login();
-        } else if (response.status === 401 && !!loggedIn) {
+        } else {
             logout();
         } // eslint-disable-next-line
-    }, [response]);
+    }, [response, error, loading]);
     return null;
 }
 
@@ -139,17 +141,19 @@ function Header({ location }: RouteComponentProps) {
                                 </React.Fragment>
                             )}
                         </div>
-                        <Link
-                            to={`${
-                                !!loggedIn ? '/logout' : '/login'
-                            }?referrer=${location.pathname}`}
-                        >
-                            <i
-                                className={`fas fa-${
-                                    !!loggedIn ? 'lock-open' : 'lock'
-                                }`}
-                            />
-                        </Link>
+                        {loggedIn !== null && (
+                            <Link
+                                to={`${
+                                    !!loggedIn ? '/logout' : '/login'
+                                }?referrer=${location.pathname}`}
+                            >
+                                <i
+                                    className={`fas fa-${
+                                        !!loggedIn ? 'lock-open' : 'lock'
+                                    }`}
+                                />
+                            </Link>
+                        )}
                     </div>
                 </header>
             )}

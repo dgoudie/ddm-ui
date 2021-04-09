@@ -1,32 +1,74 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 
 import { BeerOrLiquorBrand } from '@dgoudie/ddm-types';
 import Dialog from '../../components/dialog/Dialog';
+import Loader from '../../components/loader/Loader';
 import { LoggedInStatusContext } from '../../App';
 import { beerOrLiquorTypeIconMap } from '../../utils/beer-liquor-type-icon-map';
+import { displayErrorToast } from '../../utils/toast';
 import styles from './BeersAndLiquors.module.scss';
+import { useDebouncedEffect } from '../../utils/use-debounced-effect';
 import { useFetchFromApi } from '../../utils/fetch-from-api';
 
 export default function BeersAndLiquors() {
-    const response = useFetchFromApi<BeerOrLiquorBrand[]>(`/beers-and-liquors`);
+    const [onlyInStock, setOnlyInStock] = useState(false);
+    const [filterText, setFilterText] = useState('');
+    const [debouncedfilterText, setDebouncedFilterText] = useState(filterText);
+
+    useDebouncedEffect(() => setDebouncedFilterText(filterText), 300, [
+        filterText,
+    ]);
+
+    const params = useMemo(
+        () => ({ onlyInStock, filter: debouncedfilterText }),
+        [onlyInStock, debouncedfilterText]
+    );
+
+    const [response, error] = useFetchFromApi<BeerOrLiquorBrand[]>(
+        `/beers-and-liquors`,
+        params
+    );
     const [
         selectedBeerOrLiquor,
         setSelectedBeerOrLiquor,
     ] = useState<BeerOrLiquorBrand | null>(null);
-    if (!response?.data) {
-        return null;
+    if (!!error) {
+        displayErrorToast(error);
     }
     return (
         <React.Fragment>
-            <div className={styles.list}>
-                {response.data.map((beerOrLiquor) => (
-                    <BeerOrLiquor
-                        key={beerOrLiquor._id}
-                        beerOrLiquor={beerOrLiquor}
-                        onSelected={() => setSelectedBeerOrLiquor(beerOrLiquor)}
-                    />
-                ))}
+            <div className={styles.filters}>
+                <input
+                    autoFocus
+                    autoCorrect='off'
+                    autoCapitalize='none'
+                    type='search'
+                    onChange={(event) => setFilterText(event.target.value)}
+                    placeholder='Search...'
+                />
+                <input
+                    id='only-in-stock'
+                    type='checkbox'
+                    checked={onlyInStock}
+                    onChange={(event) => setOnlyInStock(event.target.checked)}
+                />
+                <label htmlFor='only-in-stock'>Only Show In-Stock</label>
             </div>
+            {!!response?.data ? (
+                <div className={styles.list}>
+                    {response.data.map((beerOrLiquor) => (
+                        <BeerOrLiquor
+                            key={beerOrLiquor._id}
+                            beerOrLiquor={beerOrLiquor}
+                            onSelected={() =>
+                                setSelectedBeerOrLiquor(beerOrLiquor)
+                            }
+                        />
+                    ))}
+                </div>
+            ) : (
+                <Loader className={styles.loader} />
+            )}
             {!!selectedBeerOrLiquor && (
                 <BeerOrLiquorActions
                     beerOrLiquor={selectedBeerOrLiquor}
@@ -92,7 +134,7 @@ function BeerOrLiquorActions({
                             Mark as Out-of-Stock
                         </button>
                     ) : (
-                        <button>
+                        <button className={styles.markInStock}>
                             <i className='fas fa-check' />
                             Mark as In-Stock
                         </button>
