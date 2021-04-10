@@ -110,3 +110,14 @@
         background: var(--error-button-background);
     }
 }
+
+.newBeerOrLiquorButton {
+    display: flex;
+    justify-content: center;
+    a {
+        padding: 8px 14px;
+        display: inline-block;
+        white-space: nowrap;
+        margin-top: 12px;
+    }
+}

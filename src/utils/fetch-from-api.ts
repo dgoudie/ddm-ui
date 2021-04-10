@@ -52,3 +52,8 @@ export const useFetchFromApi = <T>(
     }, [path, headers, params]);
     return [state.response, state.error, state.loading];
 };
+
+export const markInStock = (_id: string, inStock: boolean) =>
+    axios.post(
+        `${process.env.REACT_APP_API}/secure/beers-and-liquors/${_id}/mark-in-stock/${inStock}`
+    );

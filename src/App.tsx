@@ -8,10 +8,12 @@ import {
 import React, { useContext, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
+import BeerOrLiquor from './views/beer-or-liquor/BeerOrLiquor';
 import BeersAndLiquors from './views/beers-and-liquors/BeersAndLiquors';
 import Home from './views/home/Home';
 import Login from './views/login/Login';
 import Logout from './views/logout/Logout';
+import MixedDrink from './views/mixed-drink/MixedDrink';
 import MixedDrinks from './views/mixed-drinks/MixedDrinks';
 import styles from './App.module.scss';
 import { useFetchFromApi } from './utils/fetch-from-api';
@@ -64,7 +66,13 @@ function App() {
                         exact
                         component={BeersAndLiquors}
                     />
+                    <Route
+                        path='/beer-or-liquor'
+                        exact
+                        component={BeerOrLiquor}
+                    />
                     <Route path='/mixed-drinks' exact component={MixedDrinks} />
+                    <Route path='/mixed-drink' exact component={MixedDrink} />
                     <Route path='/login' exact component={Login} />
                     <Route path='/logout' exact component={Logout} />
                     <Route path='/' exact component={Home} />

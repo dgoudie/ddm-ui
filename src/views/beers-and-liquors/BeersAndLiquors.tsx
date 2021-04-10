@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useState } from 'react';
 
 import { BeerOrLiquorBrand } from '@dgoudie/ddm-types';
 import Dialog from '../../components/dialog/Dialog';
+import { Link } from 'react-router-dom';
 import Loader from '../../components/loader/Loader';
 import { LoggedInStatusContext } from '../../App';
 import { beerOrLiquorTypeIconMap } from '../../utils/beer-liquor-type-icon-map';
@@ -14,6 +15,8 @@ export default function BeersAndLiquors() {
     const [onlyInStock, setOnlyInStock] = useState(false);
     const [filterText, setFilterText] = useState('');
     const [debouncedfilterText, setDebouncedFilterText] = useState(filterText);
+
+    const { loggedIn } = useContext(LoggedInStatusContext);
 
     useDebouncedEffect(() => setDebouncedFilterText(filterText), 300, [
         filterText,
@@ -39,7 +42,6 @@ export default function BeersAndLiquors() {
         <React.Fragment>
             <div className={styles.filters}>
                 <input
-                    autoFocus
                     autoCorrect='off'
                     autoCapitalize='none'
                     type='search'
@@ -55,17 +57,30 @@ export default function BeersAndLiquors() {
                 <label htmlFor='only-in-stock'>Only Show In-Stock</label>
             </div>
             {!!response?.data ? (
-                <div className={styles.list}>
-                    {response.data.map((beerOrLiquor) => (
-                        <BeerOrLiquor
-                            key={beerOrLiquor._id}
-                            beerOrLiquor={beerOrLiquor}
-                            onSelected={() =>
-                                setSelectedBeerOrLiquor(beerOrLiquor)
-                            }
-                        />
-                    ))}
-                </div>
+                <React.Fragment>
+                    <div className={styles.list}>
+                        {response.data.map((beerOrLiquor) => (
+                            <BeerOrLiquor
+                                key={beerOrLiquor._id}
+                                beerOrLiquor={beerOrLiquor}
+                                onSelected={() =>
+                                    setSelectedBeerOrLiquor(beerOrLiquor)
+                                }
+                            />
+                        ))}
+                    </div>
+                    {loggedIn && (
+                        <div className={styles.newBeerOrLiquorButton}>
+                            <Link
+                                className={'standard-button'}
+                                to='/beer-or-liquor'
+                            >
+                                <i className='fas fa-beer'></i>
+                                New Beer / Liquor
+                            </Link>
+                        </div>
+                    )}
+                </React.Fragment>
             ) : (
                 <Loader className={styles.loader} />
             )}
