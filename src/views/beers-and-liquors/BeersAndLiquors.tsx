@@ -42,7 +42,6 @@ export default function BeersAndLiquors() {
         <React.Fragment>
             <div className={styles.filters}>
                 <input
-                    autoFocus
                     autoCorrect='off'
                     autoCapitalize='none'
                     type='search'

@@ -37,7 +37,6 @@ export default function MixedDrinks() {
         <React.Fragment>
             <div className={styles.filters}>
                 <input
-                    autoFocus
                     autoCorrect='off'
                     autoCapitalize='none'
                     type='search'
@@ -87,6 +86,7 @@ function MixedDrink({
     mixedDrink: MixedDrinkRecipeWithIngredients;
 }) {
     const [recipeVisible, setRecipeVisible] = useState(false);
+    const { loggedIn } = useContext(LoggedInStatusContext);
     return (
         <React.Fragment>
             <button
@@ -98,7 +98,7 @@ function MixedDrink({
                         {mixedDrink.name}
                     </span>
                     <span> - </span>
-                    <span>${mixedDrink.price}</span>
+                    <span>${mixedDrink.price.toFixed(2)}</span>
                 </div>
                 <div className={styles.ingredients}>
                     {mixedDrink.requiredBeersOrLiquors.map(
@@ -140,6 +140,26 @@ function MixedDrink({
                                 {mixedDrink.additionalNotes}
                             </pre>
                         </React.Fragment>
+                    )}
+                    {loggedIn && (
+                        <div className={styles.recipeActions}>
+                            <Link
+                                to={`/mixed-drink?_id=${mixedDrink._id}`}
+                                className='standard-button'
+                            >
+                                <i className='fas fa-edit'></i>
+                                Edit
+                            </Link>
+                            <button
+                                className={classNames(
+                                    'standard-button',
+                                    styles.recipeActionsDelete
+                                )}
+                            >
+                                <i className='fas fa-trash'></i>
+                                Delete
+                            </button>
+                        </div>
                     )}
                 </div>
             )}
