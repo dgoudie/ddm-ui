@@ -3,12 +3,6 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import React from 'react';
 import { ServiceError } from '@dgoudie/service-error';
 
-export type FetchFromApiOptions = {
-    token: string | null;
-    params?: any;
-    headers?: any;
-};
-
 export const fetchFromApi = <T>(
     path: string,
     params?: any,
@@ -30,7 +24,8 @@ interface UseFetchState<T> {
 export const useFetchFromApi = <T>(
     path: string,
     params?: any,
-    headers?: any
+    headers?: any,
+    skip = false
 ): [AxiosResponse<T> | null, AxiosError<ServiceError> | null, boolean] => {
     const [state, setState] = React.useState<UseFetchState<T>>({
         response: null,
@@ -39,17 +34,23 @@ export const useFetchFromApi = <T>(
     });
     React.useEffect(() => {
         const fetchData = async () => {
-            setState({ ...state, loading: true });
-            try {
-                const response = await fetchFromApi<T>(path, params, headers);
-                setState({ response, error: null, loading: false });
-            } catch (error) {
-                setState({ response: null, error, loading: false });
+            if (skip) {
+                setState({ response: null, error: null, loading: false });
+            } else {
+                setState((state) => ({ ...state, loading: true }));
+                try {
+                    const response = await fetchFromApi<T>(path, {
+                        params,
+                        headers,
+                    });
+                    setState({ response, error: null, loading: false });
+                } catch (error) {
+                    setState({ response: null, error, loading: false });
+                }
             }
         };
         fetchData();
-        //eslint-disable-next-line
-    }, [path, headers, params]);
+    }, [path, headers, params, skip]);
     return [state.response, state.error, state.loading];
 };
 

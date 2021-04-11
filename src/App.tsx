@@ -6,7 +6,6 @@ import {
     withRouter,
 } from 'react-router-dom';
 import React, { useContext, useEffect } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
 
 import BeerOrLiquor from './views/beer-or-liquor/BeerOrLiquor';
 import BeersAndLiquors from './views/beers-and-liquors/BeersAndLiquors';
@@ -16,6 +15,7 @@ import Logout from './views/logout/Logout';
 import MixedDrink from './views/mixed-drink/MixedDrink';
 import MixedDrinks from './views/mixed-drinks/MixedDrinks';
 import styles from './App.module.scss';
+import toast from 'react-hot-toast';
 import { useFetchFromApi } from './utils/fetch-from-api';
 import { useMediaQuery } from 'beautiful-react-hooks';
 
@@ -56,7 +56,6 @@ function App() {
             }}
         >
             <LoggedInChecker />
-            <Toaster position='bottom-center' />
             <Router>
                 <ThemeHandler />
                 <HeaderWithRouter />

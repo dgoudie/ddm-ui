@@ -36,7 +36,7 @@ export default function BeersAndLiquors() {
         setSelectedBeerOrLiquor,
     ] = useState<BeerOrLiquorBrand | null>(null);
     if (!!error) {
-        displayErrorToast(error);
+        displayErrorToast(error.response?.data ?? error);
     }
     return (
         <React.Fragment>
@@ -144,17 +144,24 @@ function BeerOrLiquorActions({
             {!confirmDelete ? (
                 <div className={styles.actions}>
                     {beerOrLiquor.inStock ? (
-                        <button>
+                        <button className={styles.red}>
                             <i className='fas fa-times' />
                             Mark as Out-of-Stock
                         </button>
                     ) : (
-                        <button className={styles.markInStock}>
+                        <button className={styles.green}>
                             <i className='fas fa-check' />
                             Mark as In-Stock
                         </button>
                     )}
-                    <button onClick={() => setConfirmDelete(true)}>
+                    <Link to={`/beer-or-liquor?id=${beerOrLiquor._id}`}>
+                        <i className='fas fa-edit' />
+                        Edit
+                    </Link>
+                    <button
+                        className={styles.red}
+                        onClick={() => setConfirmDelete(true)}
+                    >
                         <i className='fas fa-trash' />
                         Delete
                     </button>
@@ -168,7 +175,7 @@ function BeerOrLiquorActions({
                     </span>
                     <section>
                         <button
-                            className={styles.confirmDeleteYes}
+                            className={styles.red}
                             onClick={() => setConfirmDelete(true)}
                         >
                             Yes

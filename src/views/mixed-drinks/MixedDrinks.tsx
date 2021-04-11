@@ -31,7 +31,7 @@ export default function MixedDrinks() {
     >(`/mixed-drinks`, params);
 
     if (!!error) {
-        displayErrorToast(error);
+        displayErrorToast(error.response?.data ?? error);
     }
     return (
         <React.Fragment>

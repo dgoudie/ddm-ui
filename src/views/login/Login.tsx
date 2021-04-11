@@ -35,7 +35,7 @@ function Login({ location }: RouteComponentProps) {
             if (e.response.status === 422) {
                 toast.error('Invalid Password.');
             } else {
-                displayErrorToast(e);
+                displayErrorToast(e.response?.data ?? e);
             }
         }
     };

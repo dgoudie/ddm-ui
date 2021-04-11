@@ -4,6 +4,7 @@ import App from './App';
 import { CookiesProvider } from 'react-cookie';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Toaster } from 'react-hot-toast';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -11,6 +12,7 @@ ReactDOM.render(
         <CookiesProvider>
             <App />
         </CookiesProvider>
+        <Toaster position='bottom-center' />
     </React.StrictMode>,
     document.getElementById('root')
 );

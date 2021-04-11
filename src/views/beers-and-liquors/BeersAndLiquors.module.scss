@@ -67,19 +67,28 @@
     gap: 12px;
     margin-top: 12px;
 
-    button {
+    button,
+    a {
         border-radius: 1000px;
         border: none;
         height: 48px;
         font-size: 100%;
-        background: var(--error-button-background);
         font-family: inherit;
         color: inherit;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        cursor: pointer;
+        background: var(--background-alt2);
         i {
             margin-right: 8px;
         }
 
-        &.markInStock {
+        &.red {
+            background: var(--error-button-background);
+        }
+        &.green {
             background-color: var(--success-button-background);
         }
     }
@@ -96,18 +105,18 @@
     button {
         border-radius: 1000px;
         border: none;
-        height: 36px;
-        color: inherit;
-        text-transform: uppercase;
-        font-size: 80%;
+        height: 48px;
+        font-size: 100%;
         font-family: inherit;
-        i {
-            margin-right: 8px;
+        color: inherit;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        cursor: pointer;
+        &.red {
+            background: var(--error-button-background);
         }
-    }
-
-    &Yes {
-        background: var(--error-button-background);
     }
 }
 
