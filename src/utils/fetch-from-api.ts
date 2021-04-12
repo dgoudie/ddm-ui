@@ -58,7 +58,9 @@ export const useFetchFromApi = <T>(
 
 export const markBeerOrLiquorInStock = (_id: string, inStock: boolean) =>
     axios.post(
-        `${process.env.REACT_APP_API}/secure/beer-or-liquor/${_id}/mark-in-stock/${inStock}`
+        `${process.env.REACT_APP_API}/secure/beer-or-liquor/${_id}/mark-in-stock/${inStock}`,
+        null,
+        { withCredentials: true }
     );
 
 export const saveBeerOrLiquor = (
@@ -69,8 +71,11 @@ export const saveBeerOrLiquor = (
         `${process.env.REACT_APP_API}/secure/beer-or-liquor${
             !!id ? `/${id}` : ''
         }`,
-        beerOrLiquor
+        beerOrLiquor,
+        { withCredentials: true }
     );
 
 export const deleteBeerOrLiquor = (_id: string) =>
-    axios.delete(`${process.env.REACT_APP_API}/secure/beer-or-liquor/${_id}`);
+    axios.delete(`${process.env.REACT_APP_API}/secure/beer-or-liquor/${_id}`, {
+        withCredentials: true,
+    });
