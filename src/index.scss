@@ -87,8 +87,11 @@ a {
 }
 
 input[type='text'],
+input[type='number'],
 input[type='search'],
-input[type='password'] {
+input[type='password'],
+select {
+    -webkit-appearance: none;
     background: var(--background-alt);
     color: var(--font-color);
     border: none;
@@ -100,4 +103,8 @@ input[type='password'] {
     font-size: 100%;
     font-family: inherit;
     box-shadow: none;
+
+    &:focus {
+        background-color: var(--background-alt2);
+    }
 }

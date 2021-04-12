@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
+import { BeerOrLiquorBrand } from '@dgoudie/ddm-types';
 import React from 'react';
 import { ServiceError } from '@dgoudie/service-error';
 
@@ -39,10 +40,11 @@ export const useFetchFromApi = <T>(
             } else {
                 setState((state) => ({ ...state, loading: true }));
                 try {
-                    const response = await fetchFromApi<T>(path, {
+                    const response = await fetchFromApi<T>(
+                        path,
                         params,
-                        headers,
-                    });
+                        headers
+                    );
                     setState({ response, error: null, loading: false });
                 } catch (error) {
                     setState({ response: null, error, loading: false });
@@ -54,7 +56,21 @@ export const useFetchFromApi = <T>(
     return [state.response, state.error, state.loading];
 };
 
-export const markInStock = (_id: string, inStock: boolean) =>
+export const markBeerOrLiquorInStock = (_id: string, inStock: boolean) =>
     axios.post(
-        `${process.env.REACT_APP_API}/secure/beers-and-liquors/${_id}/mark-in-stock/${inStock}`
+        `${process.env.REACT_APP_API}/secure/beer-or-liquor/${_id}/mark-in-stock/${inStock}`
     );
+
+export const saveBeerOrLiquor = (
+    id: string | null,
+    beerOrLiquor: BeerOrLiquorBrand
+) =>
+    axios.put(
+        `${process.env.REACT_APP_API}/secure/beer-or-liquor${
+            !!id ? `/${id}` : ''
+        }`,
+        beerOrLiquor
+    );
+
+export const deleteBeerOrLiquor = (_id: string) =>
+    axios.delete(`${process.env.REACT_APP_API}/secure/beer-or-liquor/${_id}`);

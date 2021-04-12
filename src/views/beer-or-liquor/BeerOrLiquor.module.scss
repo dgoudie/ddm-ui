@@ -1,0 +1,33 @@
+.loader {
+    margin: 72px auto 0;
+}
+
+.root {
+    input:focus,
+    select:focus {
+        background-color: var(--background-alt2);
+    }
+    label {
+        margin-left: 14px;
+        margin-top: 12px;
+        display: block;
+    }
+}
+
+.buttonBar {
+    margin-top: calc(14px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    button,
+    a {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.cancelButton {
+    background: var(--background-alt);
+}

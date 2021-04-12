@@ -1,4 +1,9 @@
 import React, { useContext, useMemo, useState } from 'react';
+import {
+    deleteBeerOrLiquor,
+    markBeerOrLiquorInStock,
+    useFetchFromApi,
+} from '../../utils/fetch-from-api';
 
 import { BeerOrLiquorBrand } from '@dgoudie/ddm-types';
 import Dialog from '../../components/dialog/Dialog';
@@ -8,13 +13,15 @@ import { LoggedInStatusContext } from '../../App';
 import { beerOrLiquorTypeIconMap } from '../../utils/beer-liquor-type-icon-map';
 import { displayErrorToast } from '../../utils/toast';
 import styles from './BeersAndLiquors.module.scss';
+import toast from 'react-hot-toast';
 import { useDebouncedEffect } from '../../utils/use-debounced-effect';
-import { useFetchFromApi } from '../../utils/fetch-from-api';
 
 export default function BeersAndLiquors() {
     const [onlyInStock, setOnlyInStock] = useState(false);
     const [filterText, setFilterText] = useState('');
     const [debouncedfilterText, setDebouncedFilterText] = useState(filterText);
+
+    const [timestamp, setTimestamp] = useState(Date.now());
 
     const { loggedIn } = useContext(LoggedInStatusContext);
 
@@ -23,8 +30,8 @@ export default function BeersAndLiquors() {
     ]);
 
     const params = useMemo(
-        () => ({ onlyInStock, filter: debouncedfilterText }),
-        [onlyInStock, debouncedfilterText]
+        () => ({ onlyInStock, filter: debouncedfilterText, _: timestamp }),
+        [onlyInStock, debouncedfilterText, timestamp]
     );
 
     const [response, error] = useFetchFromApi<BeerOrLiquorBrand[]>(
@@ -35,6 +42,12 @@ export default function BeersAndLiquors() {
         selectedBeerOrLiquor,
         setSelectedBeerOrLiquor,
     ] = useState<BeerOrLiquorBrand | null>(null);
+
+    const itemUpdated = () => {
+        setTimestamp(Date.now());
+        setSelectedBeerOrLiquor(null);
+    };
+
     if (!!error) {
         displayErrorToast(error.response?.data ?? error);
     }
@@ -88,6 +101,7 @@ export default function BeersAndLiquors() {
                 <BeerOrLiquorActions
                     beerOrLiquor={selectedBeerOrLiquor}
                     onClosed={() => setSelectedBeerOrLiquor(null)}
+                    updated={itemUpdated}
                 />
             )}
         </React.Fragment>
@@ -134,22 +148,53 @@ function BeerOrLiquor({
 function BeerOrLiquorActions({
     beerOrLiquor,
     onClosed,
+    updated,
 }: {
     beerOrLiquor: BeerOrLiquorBrand;
     onClosed: () => void;
+    updated: () => void;
 }) {
     const [confirmDelete, setConfirmDelete] = useState(false);
+
+    const markInStock = React.useCallback(() => {
+        const fn = async () => {
+            try {
+                await markBeerOrLiquorInStock(
+                    beerOrLiquor._id,
+                    !beerOrLiquor.inStock
+                );
+                updated();
+            } catch (e) {
+                displayErrorToast(e);
+            }
+        };
+        fn();
+    }, [beerOrLiquor._id, beerOrLiquor.inStock, updated]);
+
+    const deleteRecord = React.useCallback(() => {
+        const fn = async () => {
+            try {
+                await deleteBeerOrLiquor(beerOrLiquor._id);
+                toast.success('Item deleted successfully.');
+                updated();
+            } catch (e) {
+                displayErrorToast(e);
+            }
+        };
+        fn();
+    }, [beerOrLiquor._id, updated]);
+
     return (
         <Dialog headerText={beerOrLiquor.name} onClosed={onClosed}>
             {!confirmDelete ? (
                 <div className={styles.actions}>
                     {beerOrLiquor.inStock ? (
-                        <button className={styles.red}>
+                        <button className={styles.red} onClick={markInStock}>
                             <i className='fas fa-times' />
                             Mark as Out-of-Stock
                         </button>
                     ) : (
-                        <button className={styles.green}>
+                        <button className={styles.green} onClick={markInStock}>
                             <i className='fas fa-check' />
                             Mark as In-Stock
                         </button>
@@ -174,10 +219,7 @@ function BeerOrLiquorActions({
                         {beerOrLiquor.name} is an ingredient.
                     </span>
                     <section>
-                        <button
-                            className={styles.red}
-                            onClick={() => setConfirmDelete(true)}
-                        >
+                        <button className={styles.red} onClick={deleteRecord}>
                             Yes
                         </button>
                         <button onClick={() => setConfirmDelete(false)}>
