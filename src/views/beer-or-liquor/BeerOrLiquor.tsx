@@ -10,28 +10,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import CurrencyInput from 'react-currency-input-field';
 import Loader from '../../components/loader/Loader';
+import { beerOrLiquorTypeIconMap } from '../../utils/beer-liquor-type-icon-map';
 import { capitalCase } from 'capital-case';
 import classNames from 'classnames';
 import { displayErrorToast } from '../../utils/toast';
 import styles from './BeerOrLiquor.module.scss';
 import toast from 'react-hot-toast';
-
-const ALL_TYPES: BeerOrLiquorBrandType[] = [
-    'BEER',
-    'WINE',
-    'CIDER',
-    'MEAD',
-    'SAKE',
-    'GIN',
-    'BRANDY',
-    'WHISKEY',
-    'RUM',
-    'TEQUILA',
-    'VODKA',
-    'ABSINTHE',
-    'EVERCLEAR',
-    'OTHER',
-];
 
 function BeerOrLiquor({ location }: RouteComponentProps) {
     const id = new URLSearchParams(location.search).get('id');
@@ -120,7 +104,7 @@ function BeerOrLiquor({ location }: RouteComponentProps) {
                     setType(e.target.value as BeerOrLiquorBrandType)
                 }
             >
-                {ALL_TYPES.map((type) => (
+                {Array.from(beerOrLiquorTypeIconMap.keys()).map((type) => (
                     <option key={type} value={type}>
                         {capitalCase(type)}
                     </option>

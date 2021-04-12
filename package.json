@@ -2,10 +2,6 @@
     "name": "ddm-ui",
     "version": "0.1.0",
     "private": true,
-    "dependencies": {
-        "change-case": "^4.1.2",
-        "react-currency-input-field": "^3.3.1"
-    },
     "scripts": {
         "start": "cross-env PROXY=https://ddm-api.goudie.dev react-scripts start",
         "start:local": "cross-env PROXY=http://localhost:8080 react-scripts start",
@@ -32,7 +28,9 @@
         ]
     },
     "devDependencies": {
-        "@dgoudie/ddm-types": "^1.0.1-9",
+        "change-case": "^4.1.2",
+        "react-currency-input-field": "^3.3.1",
+        "@dgoudie/ddm-types": "^1.0.1-11",
         "@dgoudie/service-error": "^3.0.0-3",
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.1.0",

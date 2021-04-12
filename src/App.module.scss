@@ -4,6 +4,7 @@
     top: 0;
     background: var(--background);
     font-size: 90%;
+    z-index: 1;
 
     &Inner {
         display: flex;

@@ -1,18 +1,16 @@
 import { BeerOrLiquorBrandType } from '@dgoudie/ddm-types';
 
 export const beerOrLiquorTypeIconMap = new Map<BeerOrLiquorBrandType, string>([
-    ['BEER', 'beer'],
-    ['WINE', 'wine-glass-alt'],
-    ['CIDER', 'wine-bottle'],
-    ['MEAD', 'wine-bottle'],
-    ['SAKE', 'wine-bottle'],
-    ['GIN', 'wine-bottle'],
-    ['BRANDY', 'wine-bottle'],
-    ['WHISKEY', 'glass-whiskey'],
+    ['VODKA', 'cocktail'],
+    ['LIQUEUR', ''],
     ['RUM', 'wine-bottle'],
     ['TEQUILA', 'glass-martini-alt'],
-    ['VODKA', 'cocktail'],
-    ['ABSINTHE', 'cocktail'],
-    ['EVERCLEAR', 'cocktail'],
+    ['WHISKEY', 'glass-whiskey'],
+    ['GIN', 'wine-bottle'],
+    ['BEER', 'beer'],
+    ['SELTZER', 'ruler-vertical'],
+    ['DRINK_MIX', 'blender'],
+    ['WINE', 'wine-glass-alt'],
+    ['CIDER', 'wine-bottle'],
     ['OTHER', 'cocktail'],
 ]);
