@@ -147,7 +147,7 @@ function MixedDrink({
                                 to={`/mixed-drink?_id=${mixedDrink._id}`}
                                 className='standard-button'
                             >
-                                <i className='fas fa-edit'></i>
+                                <i className='fas fa-pen'></i>
                                 Edit
                             </Link>
                             <button

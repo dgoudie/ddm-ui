@@ -204,7 +204,7 @@ function BeerOrLiquorActions({
                         </button>
                     )}
                     <Link to={`/beer-or-liquor?id=${beerOrLiquor._id}`}>
-                        <i className='fas fa-edit' />
+                        <i className='fas fa-pen' />
                         Edit
                     </Link>
                     <button
