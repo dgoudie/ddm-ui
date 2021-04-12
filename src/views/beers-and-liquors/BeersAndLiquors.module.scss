@@ -51,6 +51,12 @@
         }
     }
 
+    &Price {
+        color: var(--font-color-dim);
+        font-style: italic;
+        font-size: 75%;
+    }
+
     &NameAndIcon {
         font-size: 110%;
         margin-bottom: 4px;
@@ -114,6 +120,7 @@
         align-items: center;
         text-decoration: none;
         cursor: pointer;
+        background: var(--background-alt2);
         &.red {
             background: var(--error-button-background);
         }

@@ -1,7 +1,7 @@
-* {
-    --background: #e2e2e2;
-    --background-alt: #eeeeee;
-    --background-alt2: #eeeeee;
+html {
+    --background: #f7f7f7;
+    --background-alt: #ececec;
+    --background-alt2: #dddddd;
     --font-color: black;
     --font-color-dim: #6e6e6e;
     --border-color: #777;
@@ -10,6 +10,9 @@
     --error-text: rgb(223, 60, 92);
     --error-button-background: #f5003167;
     --success-button-background: #31f50067;
+
+    background: var(--background);
+    color: var(--font-color);
 
     @media (prefers-color-scheme: dark) {
         --background: black;
@@ -22,31 +25,6 @@
         --highlight-color-dim: #031a20;
         --error-button-background: #dc143c67;
         --success-button-background: #14dc2567;
-    }
-}
-
-html {
-    --background: #f5f5f5;
-    --background-alt: white;
-    --font-color: black;
-    --font-color-dim: #6e6e6e;
-    --border-color: #777;
-    --highlight-color: #bff0ff;
-    --highlight-color-dim: #99bec9;
-    --error-button-background: #f5003167;
-
-    background: var(--background);
-    color: var(--font-color);
-
-    @media (prefers-color-scheme: dark) {
-        --background: black;
-        --background-alt: #292929;
-        --font-color: #f5f5f5;
-        --font-color-dim: #8f8f8f;
-        --border-color: #272727;
-        --highlight-color: #052b36;
-        --highlight-color-dim: #031a20;
-        --error-button-background: #dc143c67;
     }
 }
 

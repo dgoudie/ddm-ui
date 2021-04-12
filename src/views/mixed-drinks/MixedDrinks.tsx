@@ -97,7 +97,7 @@ function MixedDrink({
                     <span className={styles.listItemNameTitle}>
                         {mixedDrink.name}
                     </span>
-                    <span> - </span>
+                    <span className={styles.listItemNameDash}> — </span>
                     <span>${mixedDrink.price.toFixed(2)}</span>
                 </div>
                 <div className={styles.ingredients}>

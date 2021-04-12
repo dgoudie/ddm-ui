@@ -126,6 +126,10 @@ function BeerOrLiquor({
                         )}`}
                     />
                     <span>{beerOrLiquor.name}</span>
+                    <span className={styles.listItemPrice}>
+                        {' '}
+                        — ${beerOrLiquor.price.toFixed(2)}
+                    </span>
                 </div>
                 <div className={styles.listItemStatus}>
                     {beerOrLiquor.inStock ? '✅ In Stock' : '❌ Out of Stock'}
