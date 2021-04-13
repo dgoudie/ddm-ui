@@ -17,7 +17,11 @@ import toast from 'react-hot-toast';
 import { useDebouncedEffect } from '../../utils/use-debounced-effect';
 
 export default function BeersAndLiquors() {
-    const [onlyInStock, setOnlyInStock] = useState(false);
+    const [showOnly, setShowOnly] = useState({
+        inStock: false,
+        outOfStock: false,
+    });
+
     const [filterText, setFilterText] = useState('');
     const [debouncedfilterText, setDebouncedFilterText] = useState(filterText);
 
@@ -28,8 +32,12 @@ export default function BeersAndLiquors() {
     ]);
 
     const params = useMemo(
-        () => ({ onlyInStock, filter: debouncedfilterText }),
-        [onlyInStock, debouncedfilterText]
+        () => ({
+            onlyInStock: showOnly.inStock,
+            onlyOutOfStock: showOnly.outOfStock,
+            filter: debouncedfilterText,
+        }),
+        [showOnly.inStock, showOnly.outOfStock, debouncedfilterText]
     );
 
     const [response, error] = useFetchFromApi<BeerOrLiquorBrand[]>(
@@ -62,12 +70,36 @@ export default function BeersAndLiquors() {
                     placeholder='Search...'
                 />
                 <input
+                    className={styles.first}
                     id='only-in-stock'
                     type='checkbox'
-                    checked={onlyInStock}
-                    onChange={(event) => setOnlyInStock(event.target.checked)}
+                    checked={showOnly.inStock}
+                    onChange={(event) => {
+                        setShowOnly({
+                            inStock: event.target.checked,
+                            outOfStock: false,
+                        });
+                    }}
                 />
                 <label htmlFor='only-in-stock'>Only Show In-Stock</label>
+                {loggedIn && (
+                    <React.Fragment>
+                        <input
+                            id='only-out-of-stock'
+                            type='checkbox'
+                            checked={showOnly.outOfStock}
+                            onChange={(event) => {
+                                setShowOnly({
+                                    outOfStock: event.target.checked,
+                                    inStock: false,
+                                });
+                            }}
+                        />
+                        <label htmlFor='only-out-of-stock'>
+                            Only Show Out-Of-Stock
+                        </label>
+                    </React.Fragment>
+                )}
             </div>
             {!!response?.data ? (
                 <React.Fragment>
@@ -128,7 +160,10 @@ function BeerOrLiquor({
                     <span>{beerOrLiquor.name}</span>
                     <span className={styles.listItemPrice}>
                         {' '}
-                        — ${beerOrLiquor.price.toFixed(2)}
+                        —{' '}
+                        {beerOrLiquor.price !== 0
+                            ? `$${beerOrLiquor.price.toFixed(2)}`
+                            : 'Free'}
                     </span>
                 </div>
                 <div className={styles.listItemStatus}>
