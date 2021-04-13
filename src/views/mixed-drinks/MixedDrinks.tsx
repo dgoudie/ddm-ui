@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext, useMemo, useRef, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 import Loader from '../../components/loader/Loader';
@@ -26,9 +26,11 @@ export default function MixedDrinks() {
         [onlyInStock, debouncedfilterText]
     );
 
+    const headers = useRef({});
+
     const [response, error] = useFetchFromApi<
         MixedDrinkRecipeWithIngredients[]
-    >(`/mixed-drinks`, params);
+    >(`/mixed-drinks`, params, headers, false, true);
 
     if (!!error) {
         displayErrorToast(error.response?.data ?? error);
