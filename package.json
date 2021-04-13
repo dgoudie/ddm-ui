@@ -3,8 +3,8 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "start": "cross-env PROXY=https://ddm-api.goudie.dev react-scripts start",
-        "start:local": "cross-env PROXY=http://localhost:8080 react-scripts start",
+        "start": "cross-env PROXY=https://ddm-api.goudie.dev REACT_APP_WS=wss://ddm-api.goudie.dev/api react-scripts start",
+        "start:local": "cross-env PROXY=http://localhost:8080 REACT_APP_WS=ws://localhost:8080/api react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
@@ -28,8 +28,6 @@
         ]
     },
     "devDependencies": {
-        "change-case": "^4.1.2",
-        "react-currency-input-field": "^3.3.1",
         "@dgoudie/ddm-types": "^1.0.1-11",
         "@dgoudie/service-error": "^3.0.0-3",
         "@testing-library/jest-dom": "^5.11.4",
@@ -43,6 +41,7 @@
         "@types/react-router-dom": "^5.1.7",
         "axios": "^0.21.1",
         "beautiful-react-hooks": "^0.31.1",
+        "change-case": "^4.1.2",
         "classnames": "^2.3.1",
         "cross-env": "^7.0.3",
         "dotenv": "^8.2.0",
@@ -50,11 +49,16 @@
         "node-sass": "^5.0.0",
         "react": "^17.0.2",
         "react-cookie": "^4.0.3",
+        "react-currency-input-field": "^3.3.1",
         "react-dom": "^17.0.2",
         "react-hot-toast": "^1.0.2",
+        "react-page-visibility": "^6.4.0",
         "react-router-dom": "^5.2.0",
         "react-scripts": "4.0.3",
+        "react-singleton-hook": "^3.1.1",
+        "react-use-websocket": "^2.5.0",
         "typescript": "^4.1.2",
         "web-vitals": "^1.0.1"
-    }
+    },
+    "dependencies": {}
 }

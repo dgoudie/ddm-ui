@@ -3,6 +3,8 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { BeerOrLiquorBrand } from '@dgoudie/ddm-types';
 import React from 'react';
 import { ServiceError } from '@dgoudie/service-error';
+import { usePageVisibility } from 'react-page-visibility';
+import { useWebSocketForUpdates } from './use-web-socket-for-updates';
 
 export const fetchFromApi = <T>(
     path: string,
@@ -26,15 +28,24 @@ export const useFetchFromApi = <T>(
     path: string,
     params?: any,
     headers?: any,
-    skip = false
+    skip = false,
+    rerunOnPageVisible = false
 ): [AxiosResponse<T> | null, AxiosError<ServiceError> | null, boolean] => {
     const [state, setState] = React.useState<UseFetchState<T>>({
         response: null,
         error: null,
         loading: true,
     });
+    const updateDate = useWebSocketForUpdates(path);
+    let pageVisible: boolean = usePageVisibility();
+    if (!rerunOnPageVisible) {
+        pageVisible = true;
+    }
     React.useEffect(() => {
         const fetchData = async () => {
+            if (!pageVisible) {
+                return;
+            }
             if (skip) {
                 setState({ response: null, error: null, loading: false });
             } else {
@@ -52,7 +63,8 @@ export const useFetchFromApi = <T>(
             }
         };
         fetchData();
-    }, [path, headers, params, skip]);
+        //eslint-disable-next-line
+    }, [path, skip, updateDate, pageVisible]);
     return [state.response, state.error, state.loading];
 };
 

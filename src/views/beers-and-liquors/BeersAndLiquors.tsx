@@ -21,8 +21,6 @@ export default function BeersAndLiquors() {
     const [filterText, setFilterText] = useState('');
     const [debouncedfilterText, setDebouncedFilterText] = useState(filterText);
 
-    const [timestamp, setTimestamp] = useState(Date.now());
-
     const { loggedIn } = useContext(LoggedInStatusContext);
 
     useDebouncedEffect(() => setDebouncedFilterText(filterText), 300, [
@@ -30,13 +28,16 @@ export default function BeersAndLiquors() {
     ]);
 
     const params = useMemo(
-        () => ({ onlyInStock, filter: debouncedfilterText, _: timestamp }),
-        [onlyInStock, debouncedfilterText, timestamp]
+        () => ({ onlyInStock, filter: debouncedfilterText }),
+        [onlyInStock, debouncedfilterText]
     );
 
     const [response, error] = useFetchFromApi<BeerOrLiquorBrand[]>(
         `/beers-and-liquors`,
-        params
+        params,
+        {},
+        false,
+        true
     );
     const [
         selectedBeerOrLiquor,
@@ -44,7 +45,6 @@ export default function BeersAndLiquors() {
     ] = useState<BeerOrLiquorBrand | null>(null);
 
     const itemUpdated = () => {
-        setTimestamp(Date.now());
         setSelectedBeerOrLiquor(null);
     };
 
