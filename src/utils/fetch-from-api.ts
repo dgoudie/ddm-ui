@@ -3,7 +3,6 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { BeerOrLiquorBrand } from '@dgoudie/ddm-types';
 import React from 'react';
 import { ServiceError } from '@dgoudie/service-error';
-import { usePageVisibility } from 'react-page-visibility';
 import { useWebSocketForUpdates } from './use-web-socket-for-updates';
 
 export const fetchFromApi = <T>(
@@ -29,23 +28,19 @@ export const useFetchFromApi = <T>(
     params?: any,
     headers?: any,
     skip = false,
-    rerunOnPageVisible = false
+    listenForWebsocketReload = false
 ): [AxiosResponse<T> | null, AxiosError<ServiceError> | null, boolean] => {
     const [state, setState] = React.useState<UseFetchState<T>>({
         response: null,
         error: null,
         loading: true,
     });
-    const updateDate = useWebSocketForUpdates(path);
-    let pageVisible: boolean = usePageVisibility();
-    if (!rerunOnPageVisible) {
-        pageVisible = true;
+    let updateDate: number | null = useWebSocketForUpdates(path);
+    if (!listenForWebsocketReload) {
+        updateDate = null;
     }
     React.useEffect(() => {
         const fetchData = async () => {
-            if (!pageVisible) {
-                return;
-            }
             if (skip) {
                 setState({ response: null, error: null, loading: false });
             } else {
@@ -64,7 +59,7 @@ export const useFetchFromApi = <T>(
         };
         fetchData();
         //eslint-disable-next-line
-    }, [path, params, headers, skip, updateDate, pageVisible]);
+    }, [path, params, headers, skip, updateDate]);
     return [state.response, state.error, state.loading];
 };
 
