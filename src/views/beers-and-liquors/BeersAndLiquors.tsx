@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext, useMemo, useRef, useState } from 'react';
 import {
     deleteBeerOrLiquor,
     markBeerOrLiquorInStock,
@@ -40,10 +40,12 @@ export default function BeersAndLiquors() {
         [showOnly.inStock, showOnly.outOfStock, debouncedfilterText]
     );
 
+    const headers = useRef({});
+
     const [response, error] = useFetchFromApi<BeerOrLiquorBrand[]>(
         `/beers-and-liquors`,
         params,
-        {},
+        headers,
         false,
         true
     );

@@ -64,7 +64,7 @@ export const useFetchFromApi = <T>(
         };
         fetchData();
         //eslint-disable-next-line
-    }, [path, skip, updateDate, pageVisible]);
+    }, [path, params, headers, skip, updateDate, pageVisible]);
     return [state.response, state.error, state.loading];
 };
 
