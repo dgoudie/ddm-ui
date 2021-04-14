@@ -33,9 +33,9 @@ export const useWebSocketForUpdates = (path: string) => {
 
     useEffect(() => {
         if (message?.type === 'UPDATE' && message?.apiPath === path) {
-            setDate(message?.timestamp);
+            setDate(Date.now());
         }
-    }, [message?.type, message?.apiPath, message?.timestamp, path]);
+    }, [message?.type, message?.apiPath, path]);
 
     useEffect(() => {
         if (pageVisible) {
