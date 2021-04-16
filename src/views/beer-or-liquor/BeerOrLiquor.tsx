@@ -50,7 +50,7 @@ function BeerOrLiquor({ location }: RouteComponentProps) {
     }, [responsePopulated]);
 
     const normalizeName = (name: string) =>
-        name.replaceAll(/[^A-z1-9 ]/g, '').toLowerCase();
+        name.replace(/[^A-z1-9 ]/g, '').toLowerCase();
 
     const save = useCallback(
         (event: React.FormEvent<HTMLFormElement>) => {
