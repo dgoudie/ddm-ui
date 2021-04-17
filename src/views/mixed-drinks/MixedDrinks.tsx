@@ -63,8 +63,8 @@ export default function MixedDrinks() {
                             />
                         ))}
                     </div>
-                    {loggedIn && (
-                        <div className={styles.newMixedDrinkButton}>
+                    <div className={styles.newMixedDrinkButton}>
+                        {loggedIn && (
                             <Link
                                 className={'standard-button'}
                                 to='/mixed-drink'
@@ -72,8 +72,8 @@ export default function MixedDrinks() {
                                 <i className='fas fa-cocktail'></i>
                                 New Mixed Drink
                             </Link>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </React.Fragment>
             ) : (
                 <Loader className={styles.loader} />

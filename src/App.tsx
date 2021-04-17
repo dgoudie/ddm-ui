@@ -119,6 +119,14 @@ function Header({ location }: RouteComponentProps) {
             breadcrumb = 'Beers & Liquors';
             break;
         }
+        case '/beer-or-liquor': {
+            if (!!location.search) {
+                breadcrumb = 'Edit Beer/Liquor';
+            } else {
+                breadcrumb = 'New Beer/Liquor';
+            }
+            break;
+        }
         case '/mixed-drinks': {
             breadcrumb = 'Mixed Drinks';
             break;

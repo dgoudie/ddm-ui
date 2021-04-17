@@ -24,6 +24,7 @@
 
 .list {
     display: block;
+    border-top: 1px solid var(--border-color);
 }
 .listItem {
     margin: 12px 0;
@@ -140,8 +141,7 @@
     display: flex;
     justify-content: center;
     a {
-        padding: 8px 14px;
-        display: inline-block;
+        padding: 0 20px;
         white-space: nowrap;
         margin: 12px 0 25vh;
     }

@@ -116,8 +116,8 @@ export default function BeersAndLiquors() {
                             />
                         ))}
                     </div>
-                    {loggedIn && (
-                        <div className={styles.newBeerOrLiquorButton}>
+                    <div className={styles.newBeerOrLiquorButton}>
+                        {loggedIn && (
                             <Link
                                 className={'standard-button'}
                                 to='/beer-or-liquor'
@@ -125,8 +125,8 @@ export default function BeersAndLiquors() {
                                 <i className='fas fa-beer'></i>
                                 New Beer / Liquor
                             </Link>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </React.Fragment>
             ) : (
                 <Loader className={styles.loader} />

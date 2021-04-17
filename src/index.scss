@@ -53,6 +53,10 @@ a {
     font-family: inherit;
     text-decoration: none;
     font-size: inherit;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     i {
         margin-right: 8px;
@@ -76,8 +80,9 @@ select {
     width: 100%;
     box-sizing: border-box;
     outline: none;
-    border-radius: 1000px;
-    padding: 8px 14px;
+    border-radius: 12px;
+    padding: 0 16px;
+    height: 48px;
     font-size: 100%;
     font-family: inherit;
     box-shadow: none;
