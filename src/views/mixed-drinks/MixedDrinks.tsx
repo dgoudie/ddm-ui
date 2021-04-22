@@ -5,7 +5,7 @@ import Loader from '../../components/loader/Loader';
 import { LoggedInStatusContext } from '../../App';
 import { MixedDrinkRecipeWithIngredients } from '@dgoudie/ddm-types';
 import classNames from 'classnames';
-import { displayErrorToast } from '../../utils/toast';
+import { errorToastEffect } from '../../utils/toast';
 import styles from './MixedDrinks.module.scss';
 import { useDebouncedEffect } from '../../utils/use-debounced-effect';
 import { useFetchFromApi } from '../../utils/fetch-from-api';
@@ -32,9 +32,7 @@ export default function MixedDrinks() {
         MixedDrinkRecipeWithIngredients[]
     >(`/mixed-drinks`, params, headers, false, true);
 
-    if (!!error) {
-        displayErrorToast(error.response?.data ?? error);
-    }
+    errorToastEffect(error?.response?.data ?? error);
     return (
         <React.Fragment>
             <div className={styles.filters}>
@@ -146,7 +144,7 @@ function MixedDrink({
                     {loggedIn && (
                         <div className={styles.recipeActions}>
                             <Link
-                                to={`/mixed-drink?_id=${mixedDrink._id}`}
+                                to={`/mixed-drink?id=${mixedDrink._id}`}
                                 className='standard-button'
                             >
                                 <i className='fas fa-pen'></i>

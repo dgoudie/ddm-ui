@@ -206,7 +206,7 @@ function BeerOrLiquorActions({
                 );
                 updated();
             } catch (e) {
-                displayErrorToast(e);
+                displayErrorToast(e.response.data);
             }
         };
         fn();
@@ -219,7 +219,7 @@ function BeerOrLiquorActions({
                 toast.success('Item deleted successfully.');
                 updated();
             } catch (e) {
-                displayErrorToast(e);
+                displayErrorToast(e.response.data);
             }
         };
         fn();

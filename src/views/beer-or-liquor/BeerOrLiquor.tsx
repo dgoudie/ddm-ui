@@ -5,6 +5,7 @@ import {
     RouteComponentProps,
     withRouter,
 } from 'react-router-dom';
+import { displayErrorToast, errorToastEffect } from '../../utils/toast';
 import { saveBeerOrLiquor, useFetchFromApi } from '../../utils/fetch-from-api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -13,7 +14,6 @@ import Loader from '../../components/loader/Loader';
 import { beerOrLiquorTypeIconMap } from '../../utils/beer-liquor-type-icon-map';
 import { capitalCase } from 'capital-case';
 import classNames from 'classnames';
-import { displayErrorToast } from '../../utils/toast';
 import styles from './BeerOrLiquor.module.scss';
 import toast from 'react-hot-toast';
 
@@ -68,7 +68,7 @@ function BeerOrLiquor({ location }: RouteComponentProps) {
                     toast.success('Item saved successfully.');
                     setSaved(true);
                 } catch (e) {
-                    displayErrorToast(e);
+                    displayErrorToast(e.response.data);
                 }
             };
             fn();
@@ -76,8 +76,8 @@ function BeerOrLiquor({ location }: RouteComponentProps) {
         [id, name, type, price, inStock]
     );
 
+    errorToastEffect(error?.response?.data ?? error);
     if (!!error) {
-        displayErrorToast(error.response?.data ?? error);
         return null;
     }
     if (loading) {
@@ -91,6 +91,8 @@ function BeerOrLiquor({ location }: RouteComponentProps) {
             <label>Name</label>
             <input
                 autoFocus
+                autoComplete='off'
+                spellCheck={false}
                 required
                 type='text'
                 value={name}

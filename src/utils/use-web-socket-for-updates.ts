@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { WsBroadcastMessage } from '@dgoudie/ddm-types';
 import { singletonHook } from 'react-singleton-hook';
@@ -26,21 +26,20 @@ const useWebSocketSingleton = singletonHook<
 });
 
 export const useWebSocketForUpdates = (path: string) => {
-    const [date, setDate] = useState(Date.now());
     const [message, pageVisible] = useWebSocketSingleton();
-
-    // const {type, apiPath, timestamp} = message;
+    const previousPageVisibleRef = useRef(pageVisible);
+    const [date, setDate] = useState(Date.now());
 
     useEffect(() => {
         if (message?.type === 'UPDATE' && message?.apiPath === path) {
             setDate(Date.now());
-        }
-    }, [message?.type, message?.apiPath, path]);
-
-    useEffect(() => {
-        if (pageVisible) {
+        } else if (pageVisible && !previousPageVisibleRef.current) {
             setDate(Date.now());
         }
+    }, [message?.type, message?.apiPath, path, pageVisible]);
+
+    useEffect(() => {
+        previousPageVisibleRef.current = pageVisible;
     }, [pageVisible]);
     return date;
 };
