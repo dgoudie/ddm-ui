@@ -1,32 +1,19 @@
-.loader {
-    margin: 72px auto 0;
-}
-
 .root {
-    input:focus,
-    select:focus {
-        background-color: var(--background-alt2);
-    }
-    label {
-        margin: 12px 0 2px 14px;
-        display: block;
-    }
-}
+    .details {
+        .dropdown {
+            top: calc(100% + 8px);
 
-.buttonBar {
-    margin-top: calc(14px);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    button,
-    a {
-        height: 48px;
+            &Item {
+                cursor: pointer;
+                padding: 12px 20px;
+            }
+        }
+    }
+    .input {
         display: flex;
-        align-items: center;
-        justify-content: center;
+        input {
+            font-size: 16px;
+            flex: 1;
+        }
     }
-}
-
-.cancelButton {
-    background: var(--background-alt);
 }

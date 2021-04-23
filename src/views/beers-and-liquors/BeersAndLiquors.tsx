@@ -1,6 +1,6 @@
 import {
     Box,
-    ButtonOutline,
+    Button,
     ButtonPrimary,
     Details,
     Dropdown,
@@ -82,10 +82,10 @@ export default function BeersAndLiquors() {
             <Flex justifyContent={'space-between'} alignItems='center' mt={3}>
                 <Heading fontSize={3}>Beers & Liquors</Heading>
                 <Link to='/mixed-drinks'>
-                    <ButtonOutline>
+                    <Button>
                         <i className='fas fa-glass-martini-alt' />
                         Mixed Drinks
-                    </ButtonOutline>
+                    </Button>
                 </Link>
             </Flex>
             <FilteredSearch my={3} className={styles.search}>

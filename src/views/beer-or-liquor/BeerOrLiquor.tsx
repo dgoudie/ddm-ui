@@ -1,19 +1,37 @@
 import { BeerOrLiquorBrand, BeerOrLiquorBrandType } from '@dgoudie/ddm-types';
 import {
+    ButtonInvisible,
+    ButtonPrimary,
+    Details,
+    Dropdown,
+    FormGroup,
+    Grid,
+    Relative,
+    StyledOcticon,
+    TextInput,
+    useDetails,
+} from '@primer/components';
+import {
+    CheckIcon,
+    CreditCardIcon,
+    QuoteIcon,
+    XIcon,
+} from '@primer/octicons-react';
+import {
     Link,
     Redirect,
     RouteComponentProps,
     withRouter,
 } from 'react-router-dom';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { displayErrorToast, errorToastEffect } from '../../utils/toast';
 import { saveBeerOrLiquor, useFetchFromApi } from '../../utils/fetch-from-api';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import CurrencyInput from 'react-currency-input-field';
+import CurrencyInput from '../../components/currency-input/CurrencyInput';
 import Loader from '../../components/loader/Loader';
+import { LoggedInStatusContext } from '../../App';
 import { beerOrLiquorTypeIconMap } from '../../utils/beer-liquor-type-icon-map';
 import { capitalCase } from 'capital-case';
-import classNames from 'classnames';
 import styles from './BeerOrLiquor.module.scss';
 import toast from 'react-hot-toast';
 
@@ -26,11 +44,23 @@ function BeerOrLiquor({ location }: RouteComponentProps) {
         !id
     );
 
+    const { loggedIn } = useContext(LoggedInStatusContext);
+
     const responsePopulated = !!response?.data;
 
-    const originalPrice = useMemo(() => response?.data.price.toFixed(2), [
-        response?.data.price,
-    ]);
+    const {
+        getDetailsProps: getTypeDetailsProps,
+        setOpen: setTypeOpen,
+    } = useDetails({
+        closeOnOutsideClick: true,
+    });
+
+    const {
+        getDetailsProps: getInStockDetailsProps,
+        setOpen: setInStockOpen,
+    } = useDetails({
+        closeOnOutsideClick: true,
+    });
 
     const [name, setName] = useState<string>('');
     const [type, setType] = useState<BeerOrLiquorBrandType>('BEER');
@@ -76,7 +106,26 @@ function BeerOrLiquor({ location }: RouteComponentProps) {
         [id, name, type, price, inStock]
     );
 
+    const typeClicked = useCallback(
+        (type: BeerOrLiquorBrandType) => {
+            setType(type);
+            setTypeOpen(false);
+        },
+        [setType, setTypeOpen]
+    );
+
+    const inStockClicked = useCallback(
+        (inStock: boolean) => {
+            setInStock(inStock);
+            setInStockOpen(false);
+        },
+        [setInStock, setInStockOpen]
+    );
+
     errorToastEffect(error?.response?.data ?? error);
+    if (loggedIn === false) {
+        return <Redirect to='/beers-and-liquors' />;
+    }
     if (!!error) {
         return null;
     }
@@ -88,68 +137,104 @@ function BeerOrLiquor({ location }: RouteComponentProps) {
     }
     return (
         <form className={styles.root} onSubmit={save}>
-            <label>Name</label>
-            <input
-                autoFocus
-                autoComplete='off'
-                spellCheck={false}
-                required
-                type='text'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            />
-            <label>Type</label>
-            <select
-                required
-                value={type}
-                onChange={(e) =>
-                    setType(e.target.value as BeerOrLiquorBrandType)
-                }
-            >
-                {Array.from(beerOrLiquorTypeIconMap.keys()).map((type) => (
-                    <option key={type} value={type}>
-                        {capitalCase(type)}
-                    </option>
-                ))}
-            </select>
-            <label>Price</label>
-            <CurrencyInput
-                required
-                prefix='$'
-                defaultValue={originalPrice}
-                decimalScale={2}
-                disableGroupSeparators={true}
-                fixedDecimalLength={2}
-                allowDecimals
-                onValueChange={(price) =>
-                    setPrice(!!price ? parseFloat(price) : 0)
-                }
-            />
-            <label>In Stock?</label>
-            <select
-                required
-                value={inStock ? 'true' : 'false'}
-                onChange={(e) => setInStock(e.target.value === 'true')}
-            >
-                <option value={'true'}>Yes</option>
-                <option value={'false'}>No</option>
-            </select>
-            <div className={styles.buttonBar}>
-                <Link
-                    to='/beers-and-liquors'
-                    className={classNames(
-                        'standard-button',
-                        styles.cancelButton
-                    )}
-                >
-                    <i className='fas fa-chevron-left' />
-                    Cancel
+            <FormGroup>
+                <FormGroup.Label htmlFor='name'>Name</FormGroup.Label>
+                <TextInput
+                    className={styles.input}
+                    autoFocus
+                    id='name'
+                    autoComplete='off'
+                    spellCheck={false}
+                    required
+                    type='text'
+                    icon={QuoteIcon}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+            </FormGroup>
+            <FormGroup>
+                <FormGroup.Label>Type</FormGroup.Label>
+                <Relative>
+                    <Details
+                        {...getTypeDetailsProps()}
+                        className={styles.details}
+                    >
+                        <Dropdown.Button>{capitalCase(type)}</Dropdown.Button>
+                        <Dropdown.Menu
+                            direction='se'
+                            className={styles.dropdown}
+                        >
+                            {Array.from(beerOrLiquorTypeIconMap.keys()).map(
+                                (type) => (
+                                    <Dropdown.Item
+                                        key={type}
+                                        onClick={() => typeClicked(type)}
+                                        className={styles.dropdownItem}
+                                    >
+                                        {capitalCase(type)}
+                                    </Dropdown.Item>
+                                )
+                            )}
+                        </Dropdown.Menu>
+                    </Details>
+                </Relative>
+            </FormGroup>
+            <FormGroup>
+                <FormGroup.Label htmlFor='price'>Price</FormGroup.Label>
+                <CurrencyInput
+                    className={styles.input}
+                    icon={CreditCardIcon}
+                    id='price'
+                    autoComplete='off'
+                    spellCheck={false}
+                    required
+                    prefix='$'
+                    value={price}
+                    onChange={(value) => setPrice(value)}
+                />
+            </FormGroup>
+            <FormGroup>
+                <FormGroup.Label>In Stock?</FormGroup.Label>
+                <Relative>
+                    <Details
+                        {...getInStockDetailsProps()}
+                        className={styles.details}
+                    >
+                        <Dropdown.Button>
+                            {inStock ? 'Yes' : 'No'}
+                        </Dropdown.Button>
+                        <Dropdown.Menu
+                            direction='se'
+                            className={styles.dropdown}
+                        >
+                            <Dropdown.Item
+                                onClick={() => inStockClicked(true)}
+                                className={styles.dropdownItem}
+                            >
+                                Yes
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                                onClick={() => inStockClicked(false)}
+                                className={styles.dropdownItem}
+                            >
+                                No
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Details>
+                </Relative>
+            </FormGroup>
+            <Grid justifyContent='end' gridAutoFlow='column' gridGap={2}>
+                <Link to='/beers-and-liquors'>
+                    <ButtonInvisible>
+                        <StyledOcticon icon={XIcon} mr={2} />
+                        Cancel
+                    </ButtonInvisible>
                 </Link>
-                <button type='submit' className='standard-button'>
-                    <i className='fas fa-save' />
+                <ButtonPrimary type='submit'>
+                    <StyledOcticon icon={CheckIcon} mr={2} />
                     Save
-                </button>
-            </div>
+                </ButtonPrimary>
+            </Grid>
         </form>
     );
 }

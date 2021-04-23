@@ -8,11 +8,12 @@ import {
     MixedDrinkRecipe,
     MixedDrinkRecipeIngredient,
 } from '@dgoudie/ddm-types';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { displayErrorToast, errorToastEffect } from '../../utils/toast';
 import { saveMixedDrink, useFetchFromApi } from '../../utils/fetch-from-api';
 
 import Loader from '../../components/loader/Loader';
+import { LoggedInStatusContext } from '../../App';
 import classNames from 'classnames';
 import styles from './MixedDrink.module.scss';
 import toast from 'react-hot-toast';
@@ -25,6 +26,8 @@ function MixedDrink({ location }: RouteComponentProps) {
         null,
         !id
     );
+
+    const { loggedIn } = useContext(LoggedInStatusContext);
 
     const responsePopulated = !!response?.data;
 
@@ -74,7 +77,9 @@ function MixedDrink({ location }: RouteComponentProps) {
     );
 
     errorToastEffect(error?.response?.data ?? error);
-
+    if (loggedIn === false) {
+        return <Redirect to='/mixed-drinks' />;
+    }
     if (!!error) {
         return null;
     }

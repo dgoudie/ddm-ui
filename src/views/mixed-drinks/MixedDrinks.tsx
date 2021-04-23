@@ -1,5 +1,5 @@
 import {
-    ButtonOutline,
+    Button,
     ButtonPrimary,
     Details,
     Dropdown,
@@ -30,7 +30,7 @@ import { useDebouncedEffect } from '../../utils/use-debounced-effect';
 import { useFetchFromApi } from '../../utils/fetch-from-api';
 
 export default function MixedDrinks() {
-    const [onlyInStock, setOnlyInStock] = useState(true);
+    const [onlyInStock, setOnlyInStock] = useState(false);
     const { getDetailsProps, setOpen } = useDetails({
         closeOnOutsideClick: true,
     });
@@ -68,10 +68,10 @@ export default function MixedDrinks() {
             <Flex justifyContent={'space-between'} alignItems='center' mt={3}>
                 <Heading fontSize={3}>Mixed Drinks</Heading>
                 <Link to='/beers-and-liquors'>
-                    <ButtonOutline>
+                    <Button>
                         <i className='fas fa-beer' />
                         Beers & Liquors
-                    </ButtonOutline>
+                    </Button>
                 </Link>
             </Flex>
             <FilteredSearch className={styles.filteredSearch}>

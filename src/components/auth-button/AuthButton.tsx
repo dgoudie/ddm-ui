@@ -5,6 +5,7 @@ import {
     Dropdown,
     Grid,
     Relative,
+    StyledOcticon,
     TextInput,
     useDetails,
 } from '@primer/components';
@@ -16,8 +17,8 @@ import {
     useEffect,
     useRef,
 } from 'react';
+import { KeyIcon, SignInIcon, SignOutIcon } from '@primer/octicons-react';
 
-import { KeyIcon } from '@primer/octicons-react';
 import { LoggedInStatusContext } from '../../App';
 import { displayErrorToast } from '../../utils/toast';
 import { fetchFromApi } from '../../utils/fetch-from-api';
@@ -120,7 +121,10 @@ function Login({ done, open }: LoginLogoutProps) {
         <form onSubmit={formSubmit}>
             <Grid gridGap={2}>
                 <Input ref={inputRef} />
-                <ButtonPrimary type='submit'>Login</ButtonPrimary>
+                <ButtonPrimary type='submit'>
+                    <StyledOcticon icon={SignInIcon} mr={2} />
+                    Login
+                </ButtonPrimary>
             </Grid>
         </form>
     );
@@ -129,7 +133,10 @@ function Login({ done, open }: LoginLogoutProps) {
 function Logout({ done, open }: LoginLogoutProps) {
     const buttonRef = useRef<HTMLButtonElement>(null);
     const Button = forwardRef<HTMLButtonElement>((_props, ref) => (
-        <ButtonPrimary ref={ref}>Logout</ButtonPrimary>
+        <ButtonPrimary ref={ref}>
+            <StyledOcticon icon={SignOutIcon} mr={2} />
+            Logout
+        </ButtonPrimary>
     ));
     const { logout } = useContext(LoggedInStatusContext);
     const formSubmit = useCallback(

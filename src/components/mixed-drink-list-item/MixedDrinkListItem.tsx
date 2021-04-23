@@ -1,9 +1,18 @@
+import {
+    BorderBox,
+    Box,
+    Button,
+    ButtonDanger,
+    Grid,
+    StyledOcticon,
+    Text,
+} from '@primer/components';
+import { PencilIcon, TrashIcon, XIcon } from '@primer/octicons-react';
 import React, { useContext, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 import { LoggedInStatusContext } from '../../App';
 import { MixedDrinkRecipeWithIngredients } from '@dgoudie/ddm-types';
-import classNames from 'classnames';
 import styles from './MixedDrinkListItem.module.scss';
 
 export function MixedDrinkListItem({
@@ -19,75 +28,113 @@ export function MixedDrinkListItem({
                 onClick={() => setRecipeVisible(!recipeVisible)}
                 className={styles.listItem}
             >
-                <div className={styles.listItemName}>
-                    <span className={styles.listItemNameTitle}>
+                <Grid
+                    gridAutoFlow='column'
+                    gridGap={1}
+                    justifyContent='center'
+                    alignItems='center'
+                >
+                    <Text fontSize={5} fontFamily='Rancho, cursive'>
                         {mixedDrink.name}
-                    </span>
-                    <span className={styles.listItemNameDash}> — </span>
-                    <span>${mixedDrink.price.toFixed(2)}</span>
-                </div>
-                <div className={styles.ingredients}>
+                    </Text>
+                    <Text color='text.secondary' fontSize={2}>
+                        —
+                    </Text>
+                    <Text
+                        color='text.secondary'
+                        fontSize={2}
+                        fontStyle='italic'
+                    >
+                        ${mixedDrink.price.toFixed(2)}
+                    </Text>
+                </Grid>
+                <div>
                     {mixedDrink.requiredBeersOrLiquors.map(
                         (ingredient, index) => (
                             <React.Fragment key={ingredient._id}>
-                                <span
-                                    className={classNames(
-                                        !ingredient.inStock &&
-                                            styles.ingredientsOutOfStock
-                                    )}
+                                <Text
+                                    fontSize={2}
+                                    color={
+                                        ingredient.inStock
+                                            ? 'text.primary'
+                                            : 'text.danger'
+                                    }
                                 >
                                     {ingredient.name}
-                                </span>
-                                {index <
-                                    mixedDrink.requiredBeersOrLiquors.length -
-                                        1 && <span>, </span>}
+                                    {index <
+                                        mixedDrink.requiredBeersOrLiquors
+                                            .length -
+                                            1 && ', '}
+                                </Text>
                             </React.Fragment>
                         )
                     )}
                 </div>
-                <div className={styles.recipeTip}>Click for recipe</div>
+                <Box mt={2}>
+                    <Text fontStyle='italic' color='text.secondary'>
+                        Click for Recipe
+                    </Text>
+                </Box>
             </button>
             {recipeVisible && (
-                <div className={styles.recipe}>
-                    <span className={styles.recipeHeader}>Recipe:</span>
-                    {mixedDrink.requiredBeersOrLiquors.map((ingredient) => (
-                        <React.Fragment key={ingredient._id}>
-                            <span>{ingredient.count}</span>
-                            <span> ✖ </span>
-                            <span>{ingredient.name}</span>
-                        </React.Fragment>
-                    ))}
+                <BorderBox bg='bg.tertiary' p={3} mb={3}>
+                    <Text fontSize={0} color='text.secondary'>
+                        Recipe:
+                    </Text>
+                    <Grid
+                        gridTemplateColumns='min-content min-content 1fr'
+                        gridGap='6px 10px'
+                        alignItems='center'
+                        mt={1}
+                    >
+                        {mixedDrink.requiredBeersOrLiquors.map((ingredient) => (
+                            <React.Fragment key={ingredient._id}>
+                                <Text>{ingredient.count}</Text>
+                                <XIcon />
+                                <Text>{ingredient.name}</Text>
+                            </React.Fragment>
+                        ))}
+                    </Grid>
                     {mixedDrink.additionalNotes && (
-                        <React.Fragment>
-                            <span className={styles.recipeHeader}>
-                                Additional Notes:
-                            </span>
-                            <pre className={styles.recipeAdditionalNotes}>
+                        <Box mt={3}>
+                            <Text fontSize={0} color='text.secondary'>
+                                Additional Info:
+                            </Text>
+                            <Text
+                                as='pre'
+                                whiteSpace='pre-wrap'
+                                fontFamily='inherit'
+                                m={0}
+                                mt={1}
+                            >
                                 {mixedDrink.additionalNotes}
-                            </pre>
-                        </React.Fragment>
+                            </Text>
+                        </Box>
                     )}
                     {loggedIn && (
-                        <div className={styles.recipeActions}>
+                        <Grid
+                            justifyContent='end'
+                            alignItems='center'
+                            gridAutoFlow='column'
+                            mt={2}
+                            gridGap={2}
+                        >
                             <Link
                                 to={`/mixed-drink?id=${mixedDrink._id}`}
                                 className='standard-button'
                             >
-                                <i className='fas fa-pen'></i>
-                                Edit
+                                <Button>
+                                    <StyledOcticon icon={PencilIcon} mr={2} />
+                                    Edit
+                                </Button>
                             </Link>
-                            <button
-                                className={classNames(
-                                    'standard-button',
-                                    styles.recipeActionsDelete
-                                )}
-                            >
-                                <i className='fas fa-trash'></i>
+                            <ButtonDanger>
+                                <StyledOcticon icon={TrashIcon} mr={2} />
                                 Delete
-                            </button>
-                        </div>
+                            </ButtonDanger>
+                        </Grid>
                     )}
-                </div>
+                </BorderBox>
             )}
         </React.Fragment>
     );
