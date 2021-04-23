@@ -1,17 +1,47 @@
-import React, { useContext, useMemo, useRef, useState } from 'react';
+import {
+    Button,
+    ButtonPrimary,
+    Details,
+    Dropdown,
+    FilteredSearch,
+    Flex,
+    Heading,
+    TextInput,
+    useDetails,
+} from '@primer/components';
+import React, {
+    useCallback,
+    useContext,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 
+import Divider from '../../components/divider/Divider';
 import { Link } from 'react-router-dom';
 import Loader from '../../components/loader/Loader';
 import { LoggedInStatusContext } from '../../App';
+import { MixedDrinkListItem } from '../../components/mixed-drink-list-item/MixedDrinkListItem';
 import { MixedDrinkRecipeWithIngredients } from '@dgoudie/ddm-types';
-import classNames from 'classnames';
-import { displayErrorToast } from '../../utils/toast';
+import { SearchIcon } from '@primer/octicons-react';
+import { errorToastEffect } from '../../utils/toast';
 import styles from './MixedDrinks.module.scss';
 import { useDebouncedEffect } from '../../utils/use-debounced-effect';
 import { useFetchFromApi } from '../../utils/fetch-from-api';
 
 export default function MixedDrinks() {
-    const [onlyInStock, setOnlyInStock] = useState(true);
+    const [onlyInStock, setOnlyInStock] = useState(false);
+    const { getDetailsProps, setOpen } = useDetails({
+        closeOnOutsideClick: true,
+    });
+
+    const updateFilter = useCallback(
+        (value: boolean) => {
+            setOpen(false);
+            setOnlyInStock(value);
+        },
+        [setOpen, setOnlyInStock]
+    );
     const [filterText, setFilterText] = useState('');
     const [debouncedfilterText, setDebouncedFilterText] = useState(filterText);
 
@@ -32,138 +62,68 @@ export default function MixedDrinks() {
         MixedDrinkRecipeWithIngredients[]
     >(`/mixed-drinks`, params, headers, false, true);
 
-    if (!!error) {
-        displayErrorToast(error.response?.data ?? error);
-    }
+    errorToastEffect(error?.response?.data ?? error);
     return (
         <React.Fragment>
-            <div className={styles.filters}>
-                <input
+            <Flex justifyContent={'space-between'} alignItems='center' mt={3}>
+                <Heading fontSize={3}>Mixed Drinks</Heading>
+                <Link to='/beers-and-liquors'>
+                    <Button>
+                        <i className='fas fa-beer' />
+                        Beers & Liquors
+                    </Button>
+                </Link>
+            </Flex>
+            <FilteredSearch className={styles.filteredSearch}>
+                <Details {...getDetailsProps()} className={styles.details}>
+                    <Dropdown.Button>
+                        {!!onlyInStock ? 'In Stock' : 'Filter'}
+                    </Dropdown.Button>
+                    <Dropdown.Menu direction='se' className={styles.menu}>
+                        <Dropdown.Item onClick={() => updateFilter(false)}>
+                            Show all
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={() => updateFilter(true)}>
+                            Show only in stock
+                        </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Details>
+                <TextInput
+                    icon={SearchIcon}
+                    className={styles.textInput}
+                    type='search'
                     autoCorrect='off'
                     autoCapitalize='none'
-                    type='search'
                     onChange={(event) => setFilterText(event.target.value)}
-                    placeholder='Search...'
                 />
-                <input
-                    id='only-in-stock'
-                    type='checkbox'
-                    checked={onlyInStock}
-                    onChange={(event) => setOnlyInStock(event.target.checked)}
-                />
-                <label htmlFor='only-in-stock'>Only Show In-Stock</label>
-            </div>
+            </FilteredSearch>
             {!!response?.data ? (
                 <React.Fragment>
-                    <div className={styles.list}>
+                    <Divider />
+                    <Flex flexDirection='column'>
                         {response.data.map((mixedDrink) => (
-                            <MixedDrink
-                                key={mixedDrink._id}
-                                mixedDrink={mixedDrink}
-                            />
+                            <React.Fragment key={mixedDrink._id}>
+                                <MixedDrinkListItem mixedDrink={mixedDrink} />
+                                <Divider />
+                            </React.Fragment>
                         ))}
-                    </div>
-                    <div className={styles.newMixedDrinkButton}>
+                    </Flex>
+                    <Flex justifyContent='center' pt={3} pb={10}>
                         {loggedIn && (
                             <Link
                                 className={'standard-button'}
                                 to='/mixed-drink'
                             >
-                                <i className='fas fa-cocktail'></i>
-                                New Mixed Drink
+                                <ButtonPrimary>
+                                    <i className='fas fa-cocktail'></i>
+                                    New Mixed Drink
+                                </ButtonPrimary>
                             </Link>
                         )}
-                    </div>
+                    </Flex>
                 </React.Fragment>
             ) : (
                 <Loader className={styles.loader} />
-            )}
-        </React.Fragment>
-    );
-}
-
-function MixedDrink({
-    mixedDrink,
-}: {
-    mixedDrink: MixedDrinkRecipeWithIngredients;
-}) {
-    const [recipeVisible, setRecipeVisible] = useState(false);
-    const { loggedIn } = useContext(LoggedInStatusContext);
-    return (
-        <React.Fragment>
-            <button
-                onClick={() => setRecipeVisible(!recipeVisible)}
-                className={styles.listItem}
-            >
-                <div className={styles.listItemName}>
-                    <span className={styles.listItemNameTitle}>
-                        {mixedDrink.name}
-                    </span>
-                    <span className={styles.listItemNameDash}> — </span>
-                    <span>${mixedDrink.price.toFixed(2)}</span>
-                </div>
-                <div className={styles.ingredients}>
-                    {mixedDrink.requiredBeersOrLiquors.map(
-                        (ingredient, index) => (
-                            <React.Fragment key={ingredient._id}>
-                                <span
-                                    className={classNames(
-                                        !ingredient.inStock &&
-                                            styles.ingredientsOutOfStock
-                                    )}
-                                >
-                                    {ingredient.name}
-                                </span>
-                                {index <
-                                    mixedDrink.requiredBeersOrLiquors.length -
-                                        1 && <span>, </span>}
-                            </React.Fragment>
-                        )
-                    )}
-                </div>
-                <div className={styles.recipeTip}>Click for recipe</div>
-            </button>
-            {recipeVisible && (
-                <div className={styles.recipe}>
-                    <span className={styles.recipeHeader}>Recipe:</span>
-                    {mixedDrink.requiredBeersOrLiquors.map((ingredient) => (
-                        <React.Fragment key={ingredient._id}>
-                            <span>{ingredient.count}</span>
-                            <span> ✖ </span>
-                            <span>{ingredient.name}</span>
-                        </React.Fragment>
-                    ))}
-                    {mixedDrink.additionalNotes && (
-                        <React.Fragment>
-                            <span className={styles.recipeHeader}>
-                                Additional Notes:
-                            </span>
-                            <pre className={styles.recipeAdditionalNotes}>
-                                {mixedDrink.additionalNotes}
-                            </pre>
-                        </React.Fragment>
-                    )}
-                    {loggedIn && (
-                        <div className={styles.recipeActions}>
-                            <Link
-                                to={`/mixed-drink?_id=${mixedDrink._id}`}
-                                className='standard-button'
-                            >
-                                <i className='fas fa-pen'></i>
-                                Edit
-                            </Link>
-                            <button
-                                className={classNames(
-                                    'standard-button',
-                                    styles.recipeActionsDelete
-                                )}
-                            >
-                                <i className='fas fa-trash'></i>
-                                Delete
-                            </button>
-                        </div>
-                    )}
-                </div>
             )}
         </React.Fragment>
     );

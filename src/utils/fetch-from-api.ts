@@ -1,6 +1,6 @@
+import { BeerOrLiquorBrand, MixedDrinkRecipe } from '@dgoudie/ddm-types';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
-import { BeerOrLiquorBrand } from '@dgoudie/ddm-types';
 import React from 'react';
 import { ServiceError } from '@dgoudie/service-error';
 import { useWebSocketForUpdates } from './use-web-socket-for-updates';
@@ -58,7 +58,6 @@ export const useFetchFromApi = <T>(
             }
         };
         fetchData();
-        //eslint-disable-next-line
     }, [path, params, headers, skip, updateDate]);
     return [state.response, state.error, state.loading];
 };
@@ -86,3 +85,15 @@ export const deleteBeerOrLiquor = (_id: string) =>
     axios.delete(`${process.env.REACT_APP_API}/secure/beer-or-liquor/${_id}`, {
         withCredentials: true,
     });
+
+export const saveMixedDrink = (
+    id: string | null,
+    mixedDrink: MixedDrinkRecipe
+) =>
+    axios.put(
+        `${process.env.REACT_APP_API}/secure/mixed-drink${
+            !!id ? `/${id}` : ''
+        }`,
+        mixedDrink,
+        { withCredentials: true }
+    );

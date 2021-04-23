@@ -1,148 +1,17 @@
-.filters {
-    margin-top: 12px;
-
-    input[type='search'] {
-        flex: 1;
-    }
-
-    label {
-        user-select: none;
-        font-size: 80%;
-    }
-
-    input[type='checkbox'] {
-        margin: 12px;
-        &.first {
-            margin-left: 6px;
-        }
-    }
-}
-
-.loader {
-    margin: 48px auto 0;
-}
-
-.list {
-    display: block;
-    border-top: 1px solid var(--border-color);
-}
-.listItem {
-    margin: 12px 0;
-    padding-bottom: 12px;
-    display: flex;
-    align-items: center;
-    &:not(:last-child) {
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    &Info {
-        flex: 1;
-        i {
-            margin-right: 8px;
-        }
-    }
-
-    &Actions {
-        flex-shrink: 0;
-        position: relative;
-        &Button {
-            border: none;
-            background: var(--background-alt);
-            color: inherit;
-            width: 36px;
-            height: 36px;
-            border-radius: 1000px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-    }
-
-    &Price {
-        color: var(--font-color-dim);
-        font-style: italic;
-        font-size: 75%;
-    }
-
-    &NameAndIcon {
-        font-size: 110%;
-        margin-bottom: 4px;
-        line-height: 1.3;
-    }
-
-    &Status {
-        font-size: 75%;
-    }
-}
-
-.actions {
-    display: grid;
-    grid-auto-flow: row;
-    gap: 12px;
-    margin-top: 12px;
-
-    button,
-    a {
-        border-radius: 1000px;
-        border: none;
-        height: 48px;
-        font-size: 100%;
-        font-family: inherit;
-        color: inherit;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none;
+.details {
+    position: relative;
+    li {
         cursor: pointer;
-        background: var(--background-alt2);
-        i {
-            margin-right: 8px;
-        }
-
-        &.red {
-            background: var(--error-button-background);
-        }
-        &.green {
-            background-color: var(--success-button-background);
-        }
+        padding: 12px 20px;
     }
 }
-
-.confirmDelete {
-    margin-top: 12px;
-    section {
-        display: grid;
-        grid-auto-flow: column;
-        margin-top: 18px;
-        gap: 12px;
+.search {
+    .menu {
+        width: auto;
+        top: calc(100% + 7px);
     }
-    button {
-        border-radius: 1000px;
-        border: none;
-        height: 48px;
-        font-size: 100%;
-        font-family: inherit;
-        color: inherit;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none;
-        cursor: pointer;
-        background: var(--background-alt2);
-        &.red {
-            background: var(--error-button-background);
-        }
-    }
-}
-
-.newBeerOrLiquorButton {
-    display: flex;
-    justify-content: center;
-    a {
-        padding: 0 20px;
-        white-space: nowrap;
-        margin: 12px 0 25vh;
+    .textInput {
+        flex: 1;
+        font-size: 16px;
     }
 }

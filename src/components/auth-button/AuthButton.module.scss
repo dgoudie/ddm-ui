@@ -1,0 +1,13 @@
+.details {
+    .menu {
+        width: auto;
+        top: calc(100% + 10px);
+        right: -18px;
+    }
+    summary {
+        cursor: pointer;
+    }
+    .passwordInput {
+        font-size: 16px;
+    }
+}
