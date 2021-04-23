@@ -1,15 +1,15 @@
+import { Header, Sticky } from '@primer/components';
 import {
     Link,
+    Redirect,
     Route,
-    RouteComponentProps,
     BrowserRouter as Router,
-    withRouter,
 } from 'react-router-dom';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 
+import AuthButton from './components/auth-button/AuthButton';
 import BeerOrLiquor from './views/beer-or-liquor/BeerOrLiquor';
 import BeersAndLiquors from './views/beers-and-liquors/BeersAndLiquors';
-import Home from './views/home/Home';
 import Login from './views/login/Login';
 import Logout from './views/logout/Logout';
 import MixedDrink from './views/mixed-drink/MixedDrink';
@@ -17,7 +17,7 @@ import MixedDrinks from './views/mixed-drinks/MixedDrinks';
 import styles from './App.module.scss';
 import toast from 'react-hot-toast';
 import { useFetchFromApi } from './utils/fetch-from-api';
-import { useMediaQuery } from 'beautiful-react-hooks';
+import { useTheme } from '@primer/components';
 
 const documentThemeColorMeta = document.querySelector(
     'meta[name="theme-color"]'
@@ -47,6 +47,16 @@ function App() {
         setLoggedIn(false);
         loggedIn === true && toast.success('Logged out successfully.');
     };
+    const { theme } = useTheme();
+
+    const backgroundColor = useMemo(() => theme.colors.bg.primary, [theme]);
+    const color = useMemo(() => theme.colors.text.primary, [theme]);
+
+    documentThemeColorMeta?.setAttribute('content', backgroundColor);
+    document.body.style.backgroundColor = backgroundColor;
+    document.body.style.color = color;
+
+    const style = useMemo(() => ({ backgroundColor }), [backgroundColor]);
     return (
         <LoggedInStatusContext.Provider
             value={{
@@ -57,9 +67,8 @@ function App() {
         >
             <LoggedInChecker />
             <Router>
-                <ThemeHandler />
-                <HeaderWithRouter />
-                <div className={styles.body}>
+                <AppHeader />
+                <div className={styles.body} style={style}>
                     <Route
                         path='/beers-and-liquors'
                         exact
@@ -74,7 +83,9 @@ function App() {
                     <Route path='/mixed-drink' exact component={MixedDrink} />
                     <Route path='/login' exact component={Login} />
                     <Route path='/logout' exact component={Logout} />
-                    <Route path='/' exact component={Home} />
+                    <Route path='/' exact>
+                        <Redirect to='/mixed-drinks' />
+                    </Route>
                 </div>
             </Router>
         </LoggedInStatusContext.Provider>
@@ -82,16 +93,6 @@ function App() {
 }
 
 export default App;
-
-function ThemeHandler() {
-    const isDark = useMediaQuery('(prefers-color-scheme: dark)');
-    if (isDark) {
-        documentThemeColorMeta?.setAttribute('content', '#000000');
-    } else {
-        documentThemeColorMeta?.setAttribute('content', '#FFFFFF');
-    }
-    return null;
-}
 
 function LoggedInChecker() {
     const { loggedIn, login, logout } = useContext(LoggedInStatusContext);
@@ -111,69 +112,23 @@ function LoggedInChecker() {
     return null;
 }
 
-function Header({ location }: RouteComponentProps) {
-    let breadcrumb: string | null = null;
-
-    switch (location.pathname) {
-        case '/beers-and-liquors': {
-            breadcrumb = 'Beers & Liquors';
-            break;
-        }
-        case '/beer-or-liquor': {
-            if (!!location.search) {
-                breadcrumb = 'Edit Beer/Liquor';
-            } else {
-                breadcrumb = 'New Beer/Liquor';
-            }
-            break;
-        }
-        case '/mixed-drinks': {
-            breadcrumb = 'Mixed Drinks';
-            break;
-        }
-        case '/login': {
-            breadcrumb = 'Login';
-            break;
-        }
-        case '/logout': {
-            breadcrumb = 'Logout';
-            break;
-        }
-    }
+function AppHeader() {
+    const { loggedIn } = useContext(LoggedInStatusContext);
     return (
-        <LoggedInStatusContext.Consumer>
-            {({ loggedIn }) => (
-                <header className={styles.header}>
-                    <div className={styles.headerInner}>
-                        <div>
-                            <Link className={styles.headerLink} to='/'>
-                                💎 Diamond Drink Menu
-                            </Link>
-                            {!!breadcrumb && (
-                                <React.Fragment>
-                                    <i className='fas fa-chevron-right' />
-                                    {breadcrumb}
-                                </React.Fragment>
-                            )}
-                        </div>
-                        {loggedIn !== null && (
-                            <Link
-                                to={`${
-                                    !!loggedIn ? '/logout' : '/login'
-                                }?referrer=${location.pathname}`}
-                            >
-                                <i
-                                    className={`fas fa-${
-                                        !!loggedIn ? 'lock-open' : 'lock'
-                                    }`}
-                                />
-                            </Link>
-                        )}
-                    </div>
-                </header>
-            )}
-        </LoggedInStatusContext.Consumer>
+        <Sticky top={0} zIndex={2}>
+            <Header>
+                <Header.Item>
+                    <Header.Link as='div'>
+                        <Link to='/mixed-drinks'>💎 Diamond Drink Menu</Link>
+                    </Header.Link>
+                </Header.Item>
+                <Header.Item full></Header.Item>
+                {loggedIn !== null && (
+                    <Header.Item>
+                        <AuthButton />
+                    </Header.Item>
+                )}
+            </Header>
+        </Sticky>
     );
 }
-
-const HeaderWithRouter = withRouter(Header);

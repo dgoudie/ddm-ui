@@ -1,38 +1,40 @@
-html {
-    --background: #f7f7f7;
-    --background-alt: #ececec;
-    --background-alt2: #dddddd;
-    --font-color: black;
-    --font-color-dim: #6e6e6e;
-    --border-color: #777;
-    --highlight-color: #bff0ff;
-    --highlight-color-dim: #99bec9;
-    --error-text: rgb(223, 60, 92);
-    --error-button-background: #f5003167;
-    --success-button-background: #31f50067;
+// html {
+//     --background: #f7f7f7;
+//     --background-alt: #ececec;
+//     --background-alt2: #dddddd;
+//     --font-color: black;
+//     --font-color-dim: #6e6e6e;
+//     --border-color: #777;
+//     --highlight-color: #bff0ff;
+//     --highlight-color-dim: #99bec9;
+//     --error-text: rgb(223, 60, 92);
+//     --error-button-background: #f5003167;
+//     --success-button-background: #31f50067;
 
-    background: var(--background);
-    color: var(--font-color);
+//     // background: var(--background);
+//     // color: var(--font-color);
 
-    @media (prefers-color-scheme: dark) {
-        --background: black;
-        --background-alt: #292929;
-        --background-alt2: #444444;
-        --font-color: #f5f5f5;
-        --font-color-dim: #8f8f8f;
-        --border-color: #272727;
-        --highlight-color: #052b36;
-        --highlight-color-dim: #031a20;
-        --error-button-background: #dc143c67;
-        --success-button-background: #14dc2567;
-    }
-}
+//     @media (prefers-color-scheme: dark) {
+//         --background: black;
+//         --background-alt: #292929;
+//         --background-alt2: #444444;
+//         --font-color: #f5f5f5;
+//         --font-color-dim: #8f8f8f;
+//         --border-color: #272727;
+//         --highlight-color: #052b36;
+//         --highlight-color-dim: #031a20;
+//         --error-button-background: #dc143c67;
+//         --success-button-background: #14dc2567;
+//     }
+// }
 
 body {
     margin: 0;
     font-family: 'Rubik', sans-serif;
-    background: inherit;
-    color: inherit;
+
+    * {
+        box-sizing: border-box;
+    }
 }
 
 code {
@@ -41,53 +43,9 @@ code {
 }
 
 a {
-    color: var(--font-color);
-}
-
-.standard-button {
-    color: var(--font-color);
-    background: var(--highlight-color);
-    border: none;
-    border-radius: 1000px;
-    cursor: pointer;
-    font-family: inherit;
     text-decoration: none;
-    font-size: inherit;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    i {
+    color: inherit;
+    button i {
         margin-right: 8px;
-    }
-
-    &:disabled {
-        color: var(--font-color-dim);
-        background: var(--highlight-color-dim);
-    }
-}
-
-input[type='text'],
-input[type='number'],
-input[type='search'],
-input[type='password'],
-select {
-    -webkit-appearance: none;
-    background: var(--background-alt);
-    color: var(--font-color);
-    border: none;
-    width: 100%;
-    box-sizing: border-box;
-    outline: none;
-    border-radius: 12px;
-    padding: 0 16px;
-    height: 48px;
-    font-size: 100%;
-    font-family: inherit;
-    box-shadow: none;
-
-    &:focus {
-        background-color: var(--background-alt2);
     }
 }
