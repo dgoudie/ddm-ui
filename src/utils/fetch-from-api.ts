@@ -39,6 +39,7 @@ export const useFetchFromApi = <T>(
     if (!listenForWebsocketReload) {
         updateDate = null;
     }
+
     React.useEffect(() => {
         const fetchData = async () => {
             if (skip) {
@@ -97,3 +98,8 @@ export const saveMixedDrink = (
         mixedDrink,
         { withCredentials: true }
     );
+
+export const deleteMixedDrink = (_id: string) =>
+    axios.delete(`${process.env.REACT_APP_API}/secure/mixed-drink/${_id}`, {
+        withCredentials: true,
+    });

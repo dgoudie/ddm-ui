@@ -22,6 +22,7 @@ const useWebSocketSingleton = singletonHook<
         },
         pageVisible
     );
+
     return [message, pageVisible];
 });
 
@@ -31,12 +32,12 @@ export const useWebSocketForUpdates = (path: string) => {
     const [date, setDate] = useState(Date.now());
 
     useEffect(() => {
-        if (message?.type === 'UPDATE' && message?.apiPath === path) {
-            setDate(Date.now());
+        if (message && message.type === 'UPDATE' && message.apiPath === path) {
+            setDate(message.timestamp);
         } else if (pageVisible && !previousPageVisibleRef.current) {
             setDate(Date.now());
         }
-    }, [message?.type, message?.apiPath, path, pageVisible]);
+    }, [message, path, pageVisible]);
 
     useEffect(() => {
         previousPageVisibleRef.current = pageVisible;

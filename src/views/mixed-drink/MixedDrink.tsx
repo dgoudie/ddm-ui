@@ -1,4 +1,13 @@
 import {
+    ButtonInvisible,
+    ButtonPrimary,
+    FormGroup,
+    Grid,
+    StyledOcticon,
+    TextInput,
+} from '@primer/components';
+import { CheckIcon, InfoIcon, QuoteIcon, XIcon } from '@primer/octicons-react';
+import {
     Link,
     Redirect,
     RouteComponentProps,
@@ -14,6 +23,7 @@ import { saveMixedDrink, useFetchFromApi } from '../../utils/fetch-from-api';
 
 import Loader from '../../components/loader/Loader';
 import { LoggedInStatusContext } from '../../App';
+import MixedDrinkIngredientEditor from '../../components/mixed-drink-ingredient-editor/MixedDrinkIngredientEditor';
 import classNames from 'classnames';
 import styles from './MixedDrink.module.scss';
 import toast from 'react-hot-toast';
@@ -33,7 +43,7 @@ function MixedDrink({ location }: RouteComponentProps) {
 
     const [name, setName] = useState<string>('');
     const [requiredBeersOrLiquors, setRequiredBeersOrLiquors] = useState<
-        MixedDrinkRecipeIngredient[]
+        Partial<MixedDrinkRecipeIngredient>[]
     >([]);
     const [additionalNotes, setAdditionalNotes] = useState<string | undefined>(
         ``
@@ -62,7 +72,7 @@ function MixedDrink({ location }: RouteComponentProps) {
                     await saveMixedDrink(id, {
                         name,
                         nameNormalized,
-                        requiredBeersOrLiquors,
+                        requiredBeersOrLiquors: requiredBeersOrLiquors as MixedDrinkRecipeIngredient[],
                         additionalNotes,
                     });
                     toast.success('Item saved successfully.');
@@ -91,32 +101,57 @@ function MixedDrink({ location }: RouteComponentProps) {
     }
     return (
         <form className={styles.root} onSubmit={save}>
-            <label>Name</label>
-            <input
-                autoFocus
-                autoComplete='off'
-                spellCheck={false}
-                required
-                type='text'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            />
-            <div className={styles.buttonBar}>
-                <Link
-                    to='/mixed-drinks'
-                    className={classNames(
-                        'standard-button',
-                        styles.cancelButton
-                    )}
-                >
-                    <i className='fas fa-chevron-left' />
-                    Cancel
+            <FormGroup>
+                <FormGroup.Label htmlFor='name'>Name</FormGroup.Label>
+                <TextInput
+                    className={styles.input}
+                    autoFocus
+                    id='name'
+                    autoComplete='off'
+                    spellCheck={false}
+                    required
+                    type='text'
+                    icon={QuoteIcon}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+            </FormGroup>
+            <FormGroup>
+                <FormGroup.Label>Ingredients</FormGroup.Label>
+                <MixedDrinkIngredientEditor
+                    value={requiredBeersOrLiquors}
+                    valueChanged={setRequiredBeersOrLiquors}
+                />
+            </FormGroup>
+            <FormGroup>
+                <FormGroup.Label htmlFor='notes'>
+                    Additional Notes
+                </FormGroup.Label>
+                <TextInput
+                    as='textarea'
+                    p={2}
+                    className={classNames(styles.input, styles.textarea)}
+                    id='notes'
+                    autoComplete='off'
+                    spellCheck={false}
+                    type='text'
+                    icon={InfoIcon}
+                    value={additionalNotes}
+                    onChange={(e) => setAdditionalNotes(e.target.value)}
+                />
+            </FormGroup>
+            <Grid justifyContent='end' gridAutoFlow='column' gridGap={2}>
+                <Link to='/mixed-drinks'>
+                    <ButtonInvisible>
+                        <StyledOcticon icon={XIcon} mr={2} />
+                        Cancel
+                    </ButtonInvisible>
                 </Link>
-                <button type='submit' className='standard-button'>
-                    <i className='fas fa-save' />
+                <ButtonPrimary type='submit'>
+                    <StyledOcticon icon={CheckIcon} mr={2} />
                     Save
-                </button>
-            </div>
+                </ButtonPrimary>
+            </Grid>
         </form>
     );
 }

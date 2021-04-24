@@ -28,7 +28,7 @@
         ]
     },
     "devDependencies": {
-        "@dgoudie/ddm-types": "^1.0.1-13",
+        "@dgoudie/ddm-types": "^1.0.1-16",
         "@dgoudie/service-error": "^3.0.0-3",
         "@primer/components": "^26",
         "@primer/octicons-react": "^13.0.0",
