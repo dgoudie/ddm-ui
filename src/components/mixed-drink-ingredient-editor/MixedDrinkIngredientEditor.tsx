@@ -1,8 +1,8 @@
 import {
     ButtonInvisible,
     ButtonOutline,
-    Flex,
     Grid,
+    Relative,
     StyledOcticon,
     TextInput,
 } from '@primer/components';
@@ -10,6 +10,7 @@ import { NumberIcon, PlusIcon, XIcon } from '@primer/octicons-react';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import BeerOrLiquorSelect from '../beer-or-liquor-select/BeerOrLiquorSelect';
+import HiddenInputForValidation from '../hidden-input-for-validation/HiddenInputForValidation';
 import { MixedDrinkRecipeIngredient } from '@dgoudie/ddm-types';
 import styles from './MixedDrinkIngredientEditor.module.scss';
 
@@ -82,12 +83,19 @@ export default function MixedDrinkIngredientEditor({
                     />
                 ))}
             </Grid>
-            <Flex mt={2}>
+            <Relative mt={2} display='inline-block'>
                 <ButtonOutline type='button' onClick={addNew}>
                     <StyledOcticon icon={PlusIcon} />
                     Add Ingredient
                 </ButtonOutline>
-            </Flex>
+                <HiddenInputForValidation
+                    type='number'
+                    value={ingredients.length}
+                    className={styles.ingredientHiddenInput}
+                    min={1}
+                    invalidMessage='You must specify at least one ingredient.'
+                />
+            </Relative>
         </React.Fragment>
     );
 }
@@ -103,7 +111,7 @@ type EditorItemProps = {
 
 const countToString = (count: number | undefined) => {
     if (typeof count === 'undefined' || isNaN(count)) {
-        return '0';
+        return '';
     }
     return count.toString();
 };
@@ -128,23 +136,30 @@ function EditorItem({
         countToString(count)
     );
 
+    const onChange = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            const value = (event.target as HTMLInputElement).value;
+            if (!!value.match(/^\d*\.?\d*$/)) {
+                setInternalCountAsString(value);
+            }
+        },
+        [setInternalCountAsString]
+    );
+
     const blur = useCallback(() => {
-        countChanged(stringToCount(internalCountAsString));
+        const countAsNumber = stringToCount(internalCountAsString);
+        countChanged(countAsNumber);
+        setInternalCountAsString(countAsNumber.toString());
     }, [countChanged, internalCountAsString]);
 
     return (
         <React.Fragment>
             <TextInput
                 className={styles.input}
-                type='number'
                 inputMode='decimal'
                 required
-                value={count}
-                onChange={(event) =>
-                    setInternalCountAsString(
-                        (event.target as HTMLInputElement).value
-                    )
-                }
+                value={internalCountAsString}
+                onChange={onChange}
                 onBlur={blur}
                 icon={NumberIcon}
                 placeholder='ex. 1'

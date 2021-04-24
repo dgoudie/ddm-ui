@@ -1,4 +1,10 @@
-import { Details, SelectMenu, TextInput, useDetails } from '@primer/components';
+import {
+    Details,
+    Relative,
+    SelectMenu,
+    TextInput,
+    useDetails,
+} from '@primer/components';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { BeerOrLiquorBrand } from '@dgoudie/ddm-types';
@@ -57,15 +63,18 @@ export default function BeerOrLiquorSelect({ id, idChanged }: Props) {
     return (
         <Details {...getDetailsProps()} className={styles.root}>
             <summary>
-                <TextInput
-                    className={styles.textInput}
-                    required
-                    readOnly
-                    value={name}
-                    onFocus={() => setOpen(true)}
-                    block
-                    placeholder={'Select Beer or Liquor...'}
-                />
+                <Relative>
+                    <TextInput
+                        className={styles.textInput}
+                        required
+                        onKeyPress={() => false}
+                        value={name}
+                        onChange={() => null}
+                        onClick={() => setOpen(true)}
+                        block
+                        placeholder={'Select Beer or Liquor...'}
+                    />
+                </Relative>
             </summary>
             <SelectMenu.Modal>
                 <SelectMenu.Header>Beers & Liquors</SelectMenu.Header>
