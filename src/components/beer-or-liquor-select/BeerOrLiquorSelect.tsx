@@ -18,8 +18,8 @@ const useAllBeersAndLiquors = singletonHook<BeerOrLiquorBrand[]>([], () => {
     const headers = useRef({});
     const [response, error] = useFetchFromApi<BeerOrLiquorBrand[]>(
         `/beers-and-liquors`,
-        params,
-        headers,
+        params.current,
+        headers.current,
         false,
         true
     );

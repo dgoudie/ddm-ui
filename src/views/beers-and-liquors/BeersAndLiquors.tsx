@@ -69,7 +69,7 @@ export default function BeersAndLiquors() {
     const [response, error] = useFetchFromApi<BeerOrLiquorBrand[]>(
         `/beers-and-liquors`,
         params,
-        headers,
+        headers.current,
         false,
         true
     );

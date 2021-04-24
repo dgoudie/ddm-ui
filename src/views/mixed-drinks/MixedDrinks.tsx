@@ -60,7 +60,7 @@ export default function MixedDrinks() {
 
     const [response, error] = useFetchFromApi<
         MixedDrinkRecipeWithIngredients[]
-    >(`/mixed-drinks`, params, headers, false, true);
+    >(`/mixed-drinks`, params, headers.current, false, true);
 
     errorToastEffect(error?.response?.data ?? error);
     return (
