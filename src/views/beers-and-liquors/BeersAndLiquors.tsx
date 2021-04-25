@@ -7,6 +7,8 @@ import {
     FilteredSearch,
     Flex,
     Heading,
+    Sticky,
+    Text,
     TextInput,
     useDetails,
 } from '@primer/components';
@@ -18,13 +20,14 @@ import React, {
     useState,
 } from 'react';
 
-import { BeerOrLiquorBrand } from '@dgoudie/ddm-types';
-import { BeerOrLiquorListItem } from '../../components/beer-or-liquor-list-item/BeerOrLiquorListItem';
+import BeerOrLiquorListItem from '../../components/beer-or-liquor-list-item/BeerOrLiquorListItem';
+import { BeersAndLiquorBrandsForType } from '@dgoudie/ddm-types';
 import Divider from '../../components/divider/Divider';
 import { Link } from 'react-router-dom';
 import Loader from '../../components/loader/Loader';
 import { LoggedInStatusContext } from '../../App';
 import { SearchIcon } from '@primer/octicons-react';
+import { capitalCase } from 'capital-case';
 import { displayErrorToast } from '../../utils/toast';
 import styles from './BeersAndLiquors.module.scss';
 import { useDebouncedEffect } from '../../utils/use-debounced-effect';
@@ -66,12 +69,26 @@ export default function BeersAndLiquors() {
 
     const headers = useRef({});
 
-    const [response, error] = useFetchFromApi<BeerOrLiquorBrand[]>(
-        `/beers-and-liquors`,
+    const [response, error] = useFetchFromApi<BeersAndLiquorBrandsForType[]>(
+        `/beers-and-liquors-by-type`,
         params,
         headers.current,
         false,
         true
+    );
+
+    const scrollIntoView = useCallback(
+        ({ target }: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+            const yOffset = -61;
+            const element = target as HTMLDivElement;
+            const y =
+                element.getBoundingClientRect().top +
+                window.pageYOffset +
+                yOffset;
+
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        },
+        []
     );
 
     if (!!error) {
@@ -121,14 +138,42 @@ export default function BeersAndLiquors() {
             {!!response?.data ? (
                 <React.Fragment>
                     <Box>
-                        <Divider />
-                        {response.data.map((beerOrLiquor) => (
-                            <React.Fragment key={beerOrLiquor._id}>
-                                <BeerOrLiquorListItem
-                                    beerOrLiquor={beerOrLiquor}
-                                />
-                                <Divider />
-                            </React.Fragment>
+                        {response.data.map((beerOrLiquorTypeAndItems) => (
+                            <Box key={beerOrLiquorTypeAndItems.type}>
+                                <Sticky
+                                    top={53}
+                                    bg='bg.secondary'
+                                    pt={2}
+                                    mx={-1}
+                                >
+                                    <Box
+                                        bg='counter.bg'
+                                        py={2}
+                                        px={3}
+                                        className={styles.stickyHeader}
+                                        onClick={scrollIntoView}
+                                    >
+                                        <Text fontSize={'18px'}>
+                                            {capitalCase(
+                                                beerOrLiquorTypeAndItems.type
+                                            )}
+                                        </Text>
+                                    </Box>
+                                </Sticky>
+                                {beerOrLiquorTypeAndItems.items.map(
+                                    (item, index) => (
+                                        <React.Fragment key={item._id}>
+                                            <BeerOrLiquorListItem
+                                                beerOrLiquor={item}
+                                            />
+                                            {index <
+                                                beerOrLiquorTypeAndItems.items
+                                                    .length -
+                                                    1 && <Divider />}
+                                        </React.Fragment>
+                                    )
+                                )}
+                            </Box>
                         ))}
                     </Box>
 

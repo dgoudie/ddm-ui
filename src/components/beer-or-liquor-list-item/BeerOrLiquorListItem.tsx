@@ -15,7 +15,7 @@ import {
     TrashIcon,
     XIcon,
 } from '@primer/octicons-react';
-import React, { useContext, useState } from 'react';
+import React, { memo, useContext, useState } from 'react';
 import {
     deleteBeerOrLiquor,
     markBeerOrLiquorInStock,
@@ -24,12 +24,11 @@ import {
 import { BeerOrLiquorBrand } from '@dgoudie/ddm-types';
 import { Link } from 'react-router-dom';
 import { LoggedInStatusContext } from '../../App';
-import { beerOrLiquorTypeIconMap } from '../../utils/beer-liquor-type-icon-map';
 import { displayErrorToast } from '../../utils/toast';
 import styles from './BeerOrLiquorListItem.module.scss';
 import toast from 'react-hot-toast';
 
-export function BeerOrLiquorListItem({
+function BeerOrLiquorListItem({
     beerOrLiquor,
 }: {
     beerOrLiquor: BeerOrLiquorBrand;
@@ -67,13 +66,6 @@ export function BeerOrLiquorListItem({
         <Flex alignItems='center' my={3} className={styles.root}>
             <Box flex={1}>
                 <Flex alignItems='center'>
-                    <Box mr={2} as='span'>
-                        <i
-                            className={`fas fa-${beerOrLiquorTypeIconMap.get(
-                                beerOrLiquor.type
-                            )}`}
-                        />
-                    </Box>
                     <Text mr={1}>{beerOrLiquor.name}</Text>
                 </Flex>
                 <Text fontSize={0}>
@@ -189,3 +181,5 @@ export function BeerOrLiquorListItem({
         </Flex>
     );
 }
+
+export default memo(BeerOrLiquorListItem);

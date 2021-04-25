@@ -30,7 +30,7 @@ import { saveBeerOrLiquor, useFetchFromApi } from '../../utils/fetch-from-api';
 import CurrencyInput from '../../components/currency-input/CurrencyInput';
 import Loader from '../../components/loader/Loader';
 import { LoggedInStatusContext } from '../../App';
-import { beerOrLiquorTypeIconMap } from '../../utils/beer-liquor-type-icon-map';
+import { beerOrLiquorTypes } from '../../utils/beer-liquor-type-icon-map';
 import { capitalCase } from 'capital-case';
 import styles from './BeerOrLiquor.module.scss';
 import toast from 'react-hot-toast';
@@ -164,17 +164,15 @@ function BeerOrLiquor({ location }: RouteComponentProps) {
                             direction='se'
                             className={styles.dropdown}
                         >
-                            {Array.from(beerOrLiquorTypeIconMap.keys()).map(
-                                (type) => (
-                                    <Dropdown.Item
-                                        key={type}
-                                        onClick={() => typeClicked(type)}
-                                        className={styles.dropdownItem}
-                                    >
-                                        {capitalCase(type)}
-                                    </Dropdown.Item>
-                                )
-                            )}
+                            {beerOrLiquorTypes.map((type) => (
+                                <Dropdown.Item
+                                    key={type}
+                                    onClick={() => typeClicked(type)}
+                                    className={styles.dropdownItem}
+                                >
+                                    {capitalCase(type)}
+                                </Dropdown.Item>
+                            ))}
                         </Dropdown.Menu>
                     </Details>
                 </Relative>

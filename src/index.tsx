@@ -7,6 +7,10 @@ import ReactDOM from 'react-dom';
 import { ThemeProvider } from '@primer/components';
 import { Toaster } from 'react-hot-toast';
 import reportWebVitals from './reportWebVitals';
+import smoothscroll from 'smoothscroll-polyfill';
+
+// kick off the polyfill!
+smoothscroll.polyfill();
 
 ReactDOM.render(
     <React.StrictMode>
