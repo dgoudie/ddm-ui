@@ -5,19 +5,24 @@ import {
     Route,
     BrowserRouter as Router,
 } from 'react-router-dom';
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { Suspense, useContext, useEffect, useMemo } from 'react';
 
 import AuthButton from './components/auth-button/AuthButton';
-import BeerOrLiquor from './views/beer-or-liquor/BeerOrLiquor';
-import BeersAndLiquors from './views/beers-and-liquors/BeersAndLiquors';
-import Login from './views/login/Login';
-import Logout from './views/logout/Logout';
-import MixedDrink from './views/mixed-drink/MixedDrink';
-import MixedDrinks from './views/mixed-drinks/MixedDrinks';
 import styles from './App.module.scss';
 import toast from 'react-hot-toast';
 import { useFetchFromApi } from './utils/fetch-from-api';
 import { useTheme } from '@primer/components';
+
+const BeerOrLiquor = React.lazy(
+    () => import('./views/beer-or-liquor/BeerOrLiquor')
+);
+const BeersAndLiquors = React.lazy(
+    () => import('./views/beers-and-liquors/BeersAndLiquors')
+);
+const MixedDrink = React.lazy(() => import('./views/mixed-drink/MixedDrink'));
+const MixedDrinks = React.lazy(
+    () => import('./views/mixed-drinks/MixedDrinks')
+);
 
 const documentThemeColorMeta = document.querySelector(
     'meta[name="theme-color"]'
@@ -72,17 +77,39 @@ function App() {
                     <Route
                         path='/beers-and-liquors'
                         exact
-                        component={BeersAndLiquors}
+                        render={() => (
+                            <Suspense fallback={<div />}>
+                                <BeersAndLiquors />
+                            </Suspense>
+                        )}
                     />
                     <Route
                         path='/beer-or-liquor'
                         exact
-                        component={BeerOrLiquor}
+                        render={() => (
+                            <Suspense fallback={<div />}>
+                                <BeerOrLiquor />
+                            </Suspense>
+                        )}
                     />
-                    <Route path='/mixed-drinks' exact component={MixedDrinks} />
-                    <Route path='/mixed-drink' exact component={MixedDrink} />
-                    <Route path='/login' exact component={Login} />
-                    <Route path='/logout' exact component={Logout} />
+                    <Route
+                        path='/mixed-drinks'
+                        exact
+                        render={() => (
+                            <Suspense fallback={<div />}>
+                                <MixedDrinks />
+                            </Suspense>
+                        )}
+                    />
+                    <Route
+                        path='/mixed-drink'
+                        exact
+                        render={() => (
+                            <Suspense fallback={<div />}>
+                                <MixedDrink />
+                            </Suspense>
+                        )}
+                    />
                     <Route path='/' exact>
                         <Redirect to='/mixed-drinks' />
                     </Route>
