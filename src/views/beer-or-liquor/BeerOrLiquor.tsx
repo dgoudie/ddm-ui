@@ -48,19 +48,15 @@ function BeerOrLiquor({ location }: RouteComponentProps) {
 
     const responsePopulated = !!response?.data;
 
-    const {
-        getDetailsProps: getTypeDetailsProps,
-        setOpen: setTypeOpen,
-    } = useDetails({
-        closeOnOutsideClick: true,
-    });
+    const { getDetailsProps: getTypeDetailsProps, setOpen: setTypeOpen } =
+        useDetails({
+            closeOnOutsideClick: true,
+        });
 
-    const {
-        getDetailsProps: getInStockDetailsProps,
-        setOpen: setInStockOpen,
-    } = useDetails({
-        closeOnOutsideClick: true,
-    });
+    const { getDetailsProps: getInStockDetailsProps, setOpen: setInStockOpen } =
+        useDetails({
+            closeOnOutsideClick: true,
+        });
 
     const [name, setName] = useState<string>('');
     const [type, setType] = useState<BeerOrLiquorBrandType>('BEER');
@@ -97,7 +93,7 @@ function BeerOrLiquor({ location }: RouteComponentProps) {
                     });
                     toast.success('Item saved successfully.');
                     setSaved(true);
-                } catch (e) {
+                } catch (e: any) {
                     displayErrorToast(e.response.data);
                 }
             };

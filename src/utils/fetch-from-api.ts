@@ -53,7 +53,7 @@ export const useFetchFromApi = <T>(
                         headers
                     );
                     setState({ response, error: null, loading: false });
-                } catch (error) {
+                } catch (error: any) {
                     setState({ response: null, error, loading: false });
                 }
             }

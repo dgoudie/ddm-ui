@@ -86,7 +86,7 @@ function Login({ done, open }: LoginLogoutProps) {
                     );
                     login();
                     done();
-                } catch (e) {
+                } catch (e: any) {
                     if (e.response.status === 422) {
                         toast.error('Invalid Password.');
                         inputRef.current?.focus();
@@ -146,7 +146,7 @@ function Logout({ done, open }: LoginLogoutProps) {
                 try {
                     await fetchFromApi(`/logout`);
                     logout();
-                } catch (e) {
+                } catch (e: any) {
                     displayErrorToast(e.response?.data ?? e);
                 }
                 done();

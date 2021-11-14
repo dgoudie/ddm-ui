@@ -35,7 +35,7 @@ export function MixedDrinkListItem({
             try {
                 await deleteMixedDrink(mixedDrink._id);
                 toast.success('Item deleted successfully.');
-            } catch (e) {
+            } catch (e: any) {
                 displayErrorToast(e.response.data);
             }
             setConfirmDelete(false);

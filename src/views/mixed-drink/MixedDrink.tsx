@@ -72,12 +72,13 @@ function MixedDrink({ location }: RouteComponentProps) {
                     await saveMixedDrink(id, {
                         name,
                         nameNormalized,
-                        requiredBeersOrLiquors: requiredBeersOrLiquors as MixedDrinkRecipeIngredient[],
+                        requiredBeersOrLiquors:
+                            requiredBeersOrLiquors as MixedDrinkRecipeIngredient[],
                         additionalNotes,
                     });
                     toast.success('Item saved successfully.');
                     setSaved(true);
-                } catch (e) {
+                } catch (e: any) {
                     displayErrorToast(e.response.data);
                 }
             };

@@ -43,7 +43,7 @@ function BeerOrLiquorListItem({
                     beerOrLiquor._id,
                     !beerOrLiquor.inStock
                 );
-            } catch (e) {
+            } catch (e: any) {
                 displayErrorToast(e.response.data);
             }
         };
@@ -55,7 +55,7 @@ function BeerOrLiquorListItem({
             try {
                 await deleteBeerOrLiquor(beerOrLiquor._id);
                 toast.success('Item deleted successfully.');
-            } catch (e) {
+            } catch (e: any) {
                 displayErrorToast(e.response.data);
             }
             setConfirmDelete(false);
