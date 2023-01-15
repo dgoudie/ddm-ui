@@ -8,9 +8,9 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { BeerOrLiquorBrand } from '@dgoudie/ddm-types';
-import { errorToastEffect } from '../../utils/toast';
 import { singletonHook } from 'react-singleton-hook';
 import styles from './BeerOrLiquorSelect.module.scss';
+import { useErrorToastEffect } from '../../utils/toast';
 import { useFetchFromApi } from '../../utils/fetch-from-api';
 
 const useAllBeersAndLiquors = singletonHook<BeerOrLiquorBrand[]>([], () => {
@@ -24,7 +24,7 @@ const useAllBeersAndLiquors = singletonHook<BeerOrLiquorBrand[]>([], () => {
     true
   );
 
-  errorToastEffect(error?.response?.data ?? error);
+  useErrorToastEffect(error?.response?.data ?? error);
 
   if (!!error) {
     return [];

@@ -24,9 +24,9 @@ import { LoggedInStatusContext } from '../../App';
 import { MixedDrinkListItem } from '../../components/mixed-drink-list-item/MixedDrinkListItem';
 import { MixedDrinkRecipeWithIngredients } from '@dgoudie/ddm-types';
 import { SearchIcon } from '@primer/octicons-react';
-import { errorToastEffect } from '../../utils/toast';
 import styles from './MixedDrinks.module.scss';
 import { useDebouncedEffect } from '../../utils/use-debounced-effect';
+import { useErrorToastEffect } from '../../utils/toast';
 import { useFetchFromApi } from '../../utils/fetch-from-api';
 
 export default function MixedDrinks() {
@@ -66,7 +66,7 @@ export default function MixedDrinks() {
     true
   );
 
-  errorToastEffect(error?.response?.data ?? error);
+  useErrorToastEffect(error?.response?.data ?? error);
   return (
     <React.Fragment>
       <Flex justifyContent={'space-between'} alignItems='center' mt={3}>
